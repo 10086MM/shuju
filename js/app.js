@@ -1126,18 +1126,18 @@
 /* ===== js/pattern-gallery.js ===== */
 (function () {
   var TRADITIONAL_DATA = [
-    { file: '水车纹.png', name: '水车纹', meaning: '记录梯田灌溉智慧，承载哈尼族生产记忆。' },
-    { file: '云雷纹.png', name: '云雷纹', meaning: '模拟哀牢山多变气候，呼应自然神秘性。' },
-    { file: '太阳纹.png', name: '太阳纹', meaning: '崇拜万物根本，穿戴可获平安吉祥。' },
-    { file: '犬齿纹.png', name: '犬齿纹', meaning: '纪念神狗赐粮传说，寓意辟邪祈福保平安。' },
-    { file: '猫头鹰眼纹.png', name: '猫头鹰眼纹', meaning: '驱邪避鬼护身，多用于儿童帽饰与妇女衣襟。' },
-    { file: '蝴蝶纹样.png', name: '蝴蝶纹', meaning: '取灵动之意，为黑色服饰增添鲜活气息。' },
+    { file: '水车纹.jpg', name: '水车纹', meaning: '记录梯田灌溉智慧，承载哈尼族生产记忆。' },
+    { file: '云雷纹.jpg', name: '云雷纹', meaning: '模拟哀牢山多变气候，呼应自然神秘性。' },
+    { file: '太阳纹.jpg', name: '太阳纹', meaning: '崇拜万物根本，穿戴可获平安吉祥。' },
+    { file: '犬齿纹.jpg', name: '犬齿纹', meaning: '纪念神狗赐粮传说，寓意辟邪祈福保平安。' },
+    { file: '猫头鹰眼纹.jpg', name: '猫头鹰眼纹', meaning: '驱邪避鬼护身，多用于儿童帽饰与妇女衣襟。' },
+    { file: '蝴蝶纹样.jpg', name: '蝴蝶纹', meaning: '取灵动之意，为黑色服饰增添鲜活气息。' },
     { file: '白鹇鸟纹.jpg', name: '白鹇鸟纹', meaning: '纪念救族神鸟，象征祥瑞降临。' },
-    { file: '鱼纹.png', name: '鱼纹', meaning: '崇拜梯田鱼，象征生命富足，多见于挂饰。' },
-    { file: '龙头纹.png', name: '龙头纹', meaning: '象征吉祥神圣，多用于银饰点缀。' },
-    { file: '莲花纹.png', name: '莲花纹', meaning: '象征纯洁高尚，平衡服饰暗色调。' },
-    { file: '蕨纹.png', name: '蕨纹', meaning: '取材山野野菜，体现与自然共生的生存智慧。' },
-    { file: '八角花纹.png', name: '八角花纹', meaning: '原型为药用野草，象征顽强生命力与健康。' },
+    { file: '鱼纹.jpg', name: '鱼纹', meaning: '崇拜梯田鱼，象征生命富足，多见于挂饰。' },
+    { file: '龙头纹.jpg', name: '龙头纹', meaning: '象征吉祥神圣，多用于银饰点缀。' },
+    { file: '莲花纹.jpg', name: '莲花纹', meaning: '象征纯洁高尚，平衡服饰暗色调。' },
+    { file: '蕨纹.jpg', name: '蕨纹', meaning: '取材山野野菜，体现与自然共生的生存智慧。' },
+    { file: '八角花纹.jpg', name: '八角花纹', meaning: '原型为药用野草，象征顽强生命力与健康。' },
     { file: '几何纹样.jpg', name: '几何纹样', meaning: '象征秩序与理性，寓意生生不息、宇宙和谐。' },
     { file: '植物纹样.jpg', name: '植物纹样', meaning: '象征生命繁荣，寓意生机勃勃、多子多福。' },
     { file: '寿字纹.jpg', name: '寿字纹', meaning: '象征长寿安康，寓意福寿绵长、吉祥如意。' },
@@ -1191,9 +1191,9 @@
     { name: '编织袋', meaning: '可重复使用的环保载体，纹样随行走传播。' }
   ];
 
-  var TRADITIONAL_FOLDERS = ['image/传统纹样（重叠式的）', 'image/传统纹样'];
-  var INNOVATION_FOLDERS = ['image/创新纹样（重叠式的）', 'image/创新纹样'];
-  var CULTURAL_FOLDERS = ['image/文创产品（重叠式的）', 'image/文创产品'];
+  var TRADITIONAL_FOLDERS = ['image/传统纹样', 'image/传统纹样（重叠式的）'];
+  var INNOVATION_FOLDERS = ['image/创新纹样', 'image/创新纹样（重叠式的）'];
+  var CULTURAL_FOLDERS = ['image/文创产品', 'image/文创产品（重叠式的）'];
 
   var tooltipEl;
   var modalEl;
@@ -1207,16 +1207,18 @@
 
   function resolveSrc(folders, file, img) {
     var folderIndex = 0;
-    img.src = encodePath(folders[folderIndex], file);
-    if (folders.length > 1) {
+    function tryNext() {
+      if (folderIndex >= folders.length) return;
       img.onerror = function () {
-        if (folderIndex < folders.length - 1) {
-          folderIndex += 1;
-          img.onerror = null;
-          img.src = encodePath(folders[folderIndex], file);
-        }
+        folderIndex += 1;
+        tryNext();
       };
+      img.onload = function () {
+        img.onerror = null;
+      };
+      img.src = encodePath(folders[folderIndex], file);
     }
+    tryNext();
   }
 
   function ensurePatternUI() {
