@@ -1288,13 +1288,30 @@
     tooltipEl.hidden = true;
   }
 
-  function openModal(meta, src, alt) {
-    modalImg.src = src;
-    modalImg.alt = alt || meta.name;
+  function openModal(meta, src, alt, folders, file) {
+    ensurePatternUI();
     modalTitle.textContent = meta.name;
     modalMeaning.textContent = meta.meaning;
+    modalImg.alt = alt || meta.name;
     modalEl.hidden = false;
     document.body.classList.add('pattern-modal-open');
+
+    var url = src;
+    if ((!url || !String(url).trim()) && folders && file) {
+      url = encodePath(folders[0], file);
+    }
+    if (!url) return;
+
+    delete modalImg.dataset.mediaQueued;
+    modalImg.classList.remove('media-loaded');
+    modalImg.classList.add('media-pending');
+    if (window.MediaLoadQueue && typeof window.MediaLoadQueue.urgent === 'function') {
+      window.MediaLoadQueue.urgent(modalImg, url);
+    } else {
+      modalImg.src = url;
+      modalImg.classList.remove('media-pending');
+      modalImg.classList.add('media-loaded');
+    }
   }
 
   function closeModal() {
@@ -1303,7 +1320,7 @@
     document.body.classList.remove('pattern-modal-open');
   }
 
-  function bindInteractive(button, meta, img) {
+  function bindInteractive(button, meta, img, folders, file) {
     button.addEventListener('mouseenter', function (e) {
       showTooltip(meta, e.clientX, e.clientY);
     });
@@ -1313,7 +1330,15 @@
     button.addEventListener('mouseleave', hideTooltip);
     button.addEventListener('click', function () {
       hideTooltip();
-      openModal(meta, img.currentSrc || img.src, img.alt);
+      var moduleEl = (img && img.closest) ? (img.closest('.pattern-showcase, .age-outfit, [data-media-module]') || img.parentElement) : null;
+      if (window.MediaLoadQueue && moduleEl) {
+        window.MediaLoadQueue.boost(moduleEl);
+        if (img && (img.classList.contains('media-pending') || !img.currentSrc)) {
+          var readySrc = folders && file ? encodePath(folders[0], file) : (img.getAttribute('data-src') || '');
+          if (readySrc) window.MediaLoadQueue.urgent(img, readySrc);
+        }
+      }
+      openModal(meta, (img && (img.currentSrc || img.src)) || (folders && file ? encodePath(folders[0], file) : ''), img && img.alt, folders, file);
     });
   }
 
@@ -1366,7 +1391,8 @@
 
       setTimeout(function () {
         delete heroImg.dataset.mediaQueued;
-        resolveSrc(TRADITIONAL_FOLDERS, item.file, heroImg, { immediate: true, priority: true });
+        if (window.MediaLoadQueue) window.MediaLoadQueue.boost(container);
+        resolveSrc(TRADITIONAL_FOLDERS, item.file, heroImg, { immediate: true, priority: true, boost: true });
         indexEl.textContent = String(index + 1).padStart(2, '0');
         nameEl.textContent = item.name;
         meaningEl.textContent = item.meaning;
@@ -1392,18 +1418,49 @@
 
       btn.appendChild(img);
       btn.addEventListener('click', function () {
+        if (window.MediaLoadQueue) {
+          window.MediaLoadQueue.boost(container);
+          if (!img.currentSrc && item.file) {
+            window.MediaLoadQueue.urgent(img, encodePath(TRADITIONAL_FOLDERS[0], item.file));
+          }
+        }
         showItem(index, true);
         resetAuto();
       });
       btn.addEventListener('dblclick', function () {
-        openModal(item, img.currentSrc || img.src, img.alt);
+        openModal(
+          item,
+          img.currentSrc || img.src,
+          img.alt,
+          TRADITIONAL_FOLDERS,
+          item.file
+        );
       });
       rail.appendChild(btn);
     });
 
+    /* 缩略图滑到可视区时，提升本模块优先级 */
+    if (typeof IntersectionObserver !== 'undefined') {
+      var thumbObs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          if (window.MediaLoadQueue) window.MediaLoadQueue.boost(container);
+        });
+      }, { root: rail, threshold: 0.4 });
+      rail.querySelectorAll('.pattern-spotlight__thumb').forEach(function (thumb) {
+        thumbObs.observe(thumb);
+      });
+    }
+
     heroImg.addEventListener('click', function () {
       var item = TRADITIONAL_DATA[activeIndex];
-      openModal(item, heroImg.currentSrc || heroImg.src, item.name);
+      openModal(
+        item,
+        heroImg.currentSrc || heroImg.src,
+        item.name,
+        TRADITIONAL_FOLDERS,
+        item.file
+      );
     });
 
     function tick() {
@@ -1474,7 +1531,7 @@
       inner.insertBefore(img, inner.firstChild);
 
       card.appendChild(inner);
-      bindInteractive(card, meta, img);
+      bindInteractive(card, meta, img, INNOVATION_FOLDERS, file);
       card.addEventListener('click', function (e) {
         if (drag.moved) {
           e.preventDefault();
@@ -1641,7 +1698,13 @@
       });
 
       item.addEventListener('click', function () {
-        openModal(meta, img.currentSrc || img.src, img.alt);
+        if (window.MediaLoadQueue) {
+          window.MediaLoadQueue.boost(container);
+          if (!img.currentSrc) {
+            window.MediaLoadQueue.urgent(img, encodePath(CULTURAL_FOLDERS[0], file));
+          }
+        }
+        openModal(meta, img.currentSrc || img.src, img.alt, CULTURAL_FOLDERS, file);
       });
 
       grid.appendChild(item);
