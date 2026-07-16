@@ -1683,6 +1683,9 @@
       INNOVATION_DATA
     );
     buildShelf(document.getElementById('pattern-shelf-cultural'));
+    if (window.MediaLoadQueue && typeof window.MediaLoadQueue.refresh === 'function') {
+      window.MediaLoadQueue.refresh(document.getElementById('panel-act1') || document);
+    }
   }
 
   if (document.readyState === 'loading') {
@@ -1790,6 +1793,9 @@
       self.track.appendChild(btn);
       self.cards.push(btn);
     });
+    if (window.MediaLoadQueue && typeof window.MediaLoadQueue.refresh === 'function') {
+      window.MediaLoadQueue.refresh(self.root);
+    }
   };
 
   AgeOutfitCarousel.prototype.layout = function () {

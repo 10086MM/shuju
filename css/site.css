@@ -4048,3 +4048,29 @@ img.media-loaded {
   }
 }
 
+/* 模块级加载状态 */
+.media-module-loading {
+  position: relative;
+}
+
+.media-module-loading::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 12px;
+  width: 28px;
+  height: 3px;
+  margin-left: -14px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, transparent, rgba(212, 168, 67, 0.85), transparent);
+  background-size: 200% 100%;
+  animation: media-shimmer 1s linear infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.media-module-ready.media-module-loading::after {
+  display: none;
+}
+
+
