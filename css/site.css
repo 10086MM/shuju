@@ -4006,3 +4006,45 @@ body {
   line-height: 1.75;
   text-align: left;
 }
+
+/* 串行加载：占位 → 淡入 */
+img.media-pending {
+  opacity: 0;
+}
+
+img.media-loaded {
+  opacity: 1;
+  transition: opacity 0.45s ease;
+}
+
+.pattern-bento__item.media-slot-pending,
+.pattern-coverflow__card.media-slot-pending,
+.pattern-spotlight__thumb.media-slot-pending,
+.fcard.media-slot-pending,
+.content-card.media-slot-pending {
+  background-image: linear-gradient(
+    110deg,
+    rgba(255, 248, 236, 0.55) 25%,
+    rgba(255, 255, 255, 0.85) 45%,
+    rgba(255, 248, 236, 0.55) 65%
+  );
+  background-size: 200% 100%;
+  animation: media-shimmer 1.2s linear infinite;
+}
+
+@keyframes media-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  img.media-loaded { transition: none; }
+  .pattern-bento__item.media-slot-pending,
+  .pattern-coverflow__card.media-slot-pending,
+  .pattern-spotlight__thumb.media-slot-pending,
+  .fcard.media-slot-pending,
+  .content-card.media-slot-pending {
+    animation: none;
+  }
+}
+

@@ -30,11 +30,13 @@
     if (event.data && event.data.type === 'embed-parent-ready') notify();
   });
 
-  document.querySelectorAll('img').forEach(function (img) {
-    if (img.complete) return;
-    img.addEventListener('load', notify);
-    img.addEventListener('error', notify);
-  });
+  /* 串行加载的图片会在后续触发 load，需捕获阶段监听 */
+  document.addEventListener('load', function (event) {
+    if (event.target && event.target.tagName === 'IMG') notify();
+  }, true);
+  document.addEventListener('error', function (event) {
+    if (event.target && event.target.tagName === 'IMG') notify();
+  }, true);
 
   var root = getRoot();
   if (root && typeof ResizeObserver !== 'undefined') {

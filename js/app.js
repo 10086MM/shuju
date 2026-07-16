@@ -1205,20 +1205,37 @@
     return folder.split('/').map(encodeURIComponent).join('/') + '/' + encodeURIComponent(file);
   }
 
-  function resolveSrc(folders, file, img) {
-    var folderIndex = 0;
-    function tryNext() {
-      if (folderIndex >= folders.length) return;
-      img.onerror = function () {
-        folderIndex += 1;
-        tryNext();
-      };
-      img.onload = function () {
-        img.onerror = null;
-      };
-      img.src = encodePath(folders[folderIndex], file);
+  function resolveSrc(folders, file, img, opts) {
+    opts = opts || {};
+    if (!window.MediaLoadQueue) {
+      img.src = encodePath(folders[0], file);
+      return;
     }
-    tryNext();
+    window.MediaLoadQueue.schedule(img, function (done) {
+      var folderIndex = 0;
+      var finished = false;
+      function finish() {
+        if (finished) return;
+        finished = true;
+        img.onerror = null;
+        img.onload = null;
+        done();
+      }
+      function tryNext() {
+        if (folderIndex >= folders.length) {
+          finish();
+          return;
+        }
+        img.onerror = function () {
+          folderIndex += 1;
+          tryNext();
+        };
+        img.onload = finish;
+        img.src = encodePath(folders[folderIndex], file);
+        if (img.complete && img.naturalWidth > 0) finish();
+      }
+      tryNext();
+    }, opts);
   }
 
   function ensurePatternUI() {
@@ -1348,7 +1365,8 @@
       heroImg.classList.add('is-fade');
 
       setTimeout(function () {
-        resolveSrc(TRADITIONAL_FOLDERS, item.file, heroImg);
+        delete heroImg.dataset.mediaQueued;
+        resolveSrc(TRADITIONAL_FOLDERS, item.file, heroImg, { immediate: true, priority: true });
         indexEl.textContent = String(index + 1).padStart(2, '0');
         nameEl.textContent = item.name;
         meaningEl.textContent = item.meaning;
@@ -1369,7 +1387,7 @@
 
       var img = document.createElement('img');
       img.alt = item.name;
-      img.loading = index < 12 ? 'eager' : 'lazy';
+      img.loading = 'lazy';
       resolveSrc(TRADITIONAL_FOLDERS, item.file, img);
 
       btn.appendChild(img);
@@ -1443,8 +1461,8 @@
       var img = document.createElement('img');
       img.className = 'pattern-coverflow__img';
       img.alt = meta.name;
-      img.loading = index < 3 ? 'eager' : 'lazy';
-      resolveSrc(INNOVATION_FOLDERS, file, img);
+      img.loading = 'lazy';
+      resolveSrc(INNOVATION_FOLDERS, file, img, index === 0 ? { immediate: true, priority: true } : null);
 
       var inner = document.createElement('div');
       inner.className = 'pattern-coverflow__card-inner';
@@ -1600,8 +1618,8 @@
 
       var img = document.createElement('img');
       img.alt = meta.name;
-      img.loading = index < 6 ? 'eager' : 'lazy';
-      resolveSrc(CULTURAL_FOLDERS, file, img);
+      img.loading = 'lazy';
+      resolveSrc(CULTURAL_FOLDERS, file, img, index === 0 ? { immediate: true } : null);
 
       item.innerHTML =
         '<span class="pattern-bento__tag">' + meta.name + '</span>' +
@@ -1743,12 +1761,18 @@
       var wrap = document.createElement('div');
       wrap.className = 'age-outfit__img-wrap' + (group.files.length > 1 ? ' age-outfit__img-wrap--dual' : '');
 
-      group.files.forEach(function (file) {
+      group.files.forEach(function (file, fi) {
         var img = document.createElement('img');
-        img.src = encodePath(file);
         img.alt = group.label;
-        img.loading = i === 0 ? 'eager' : 'lazy';
+        img.loading = 'lazy';
         img.draggable = false;
+        if (window.MediaLoadQueue) {
+          window.MediaLoadQueue.loadSrc(img, encodePath(file), i === 0 && fi === 0
+            ? { immediate: true, priority: true }
+            : null);
+        } else {
+          img.src = encodePath(file);
+        }
         wrap.appendChild(img);
       });
 
