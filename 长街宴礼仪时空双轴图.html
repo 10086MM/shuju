@@ -126,10 +126,10 @@
     }
 
     .zone-label {
-      font-family: 'Noto Serif SC', serif;
-      font-size: 11px;
+      font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
+      font-size: 18px;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.14em;
       pointer-events: none;
     }
 
@@ -389,20 +389,133 @@
       </div>
 
       <div class="banquet">
-        <svg class="banquet-svg" viewBox="0 0 606 108" role="img" aria-label="长街宴龙舟席位示意" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <image href="image/礼仪/dragon-boat-banquet.jpg" xlink:href="image/礼仪/dragon-boat-banquet.jpg" x="0" y="0" width="606" height="84" preserveAspectRatio="xMidYMid meet"/>
+        <svg class="banquet-svg" viewBox="0 0 960 168" role="img" aria-label="长街宴龙舟席位示意" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="tblRed" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e88878"/><stop offset="55%" stop-color="#c24a3a"/><stop offset="100%" stop-color="#7a1810"/>
+            </linearGradient>
+            <linearGradient id="tblGold" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f6e2a4"/><stop offset="55%" stop-color="#e0b24a"/><stop offset="100%" stop-color="#9a6a18"/>
+            </linearGradient>
+            <linearGradient id="tblJade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#9ed9b8"/><stop offset="55%" stop-color="#4f9a78"/><stop offset="100%" stop-color="#1f4a3a"/>
+            </linearGradient>
+            <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#8a4a28"/><stop offset="50%" stop-color="#5c2e14"/><stop offset="100%" stop-color="#3a1a0a"/>
+            </linearGradient>
+            <linearGradient id="dragonBody" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6b3a22"/><stop offset="40%" stop-color="#4a2412"/><stop offset="100%" stop-color="#2a1408"/>
+            </linearGradient>
+            <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="1.2" stdDeviation="1.2" flood-color="#3d2b1f" flood-opacity="0.22"/>
+            </filter>
+          </defs>
 
+          <!-- 桌面三段 -->
+          <g filter="url(#soft)">
+            <rect x="132" y="68" width="220" height="28" rx="4" fill="url(#tblRed)"/>
+            <rect x="352" y="68" width="260" height="28" rx="4" fill="url(#tblGold)"/>
+            <rect x="612" y="68" width="310" height="28" rx="4" fill="url(#tblJade)"/>
+            <!-- 桌沿高光 -->
+            <rect x="132" y="68" width="790" height="5" rx="2" fill="rgba(255,255,255,0.22)"/>
+          </g>
+
+          <!-- 碗碟 -->
+          <g fill="#f7f1e4" stroke="#d8c8a8" stroke-width="0.8">
+            <g id="bowls-red">
+              <circle cx="160" cy="76" r="4.2"/><circle cx="160" cy="88" r="4.2"/>
+              <circle cx="188" cy="76" r="4.2"/><circle cx="188" cy="88" r="4.2"/>
+              <circle cx="216" cy="76" r="4.2"/><circle cx="216" cy="88" r="4.2"/>
+              <circle cx="244" cy="76" r="4.2"/><circle cx="244" cy="88" r="4.2"/>
+              <circle cx="272" cy="76" r="4.2"/><circle cx="272" cy="88" r="4.2"/>
+              <circle cx="300" cy="76" r="4.2"/><circle cx="300" cy="88" r="4.2"/>
+              <circle cx="328" cy="76" r="4.2"/><circle cx="328" cy="88" r="4.2"/>
+            </g>
+            <g id="bowls-gold">
+              <circle cx="380" cy="76" r="4.2"/><circle cx="380" cy="88" r="4.2"/>
+              <circle cx="412" cy="76" r="4.2"/><circle cx="412" cy="88" r="4.2"/>
+              <circle cx="444" cy="76" r="4.2"/><circle cx="444" cy="88" r="4.2"/>
+              <circle cx="476" cy="76" r="4.2"/><circle cx="476" cy="88" r="4.2"/>
+              <circle cx="508" cy="76" r="4.2"/><circle cx="508" cy="88" r="4.2"/>
+              <circle cx="540" cy="76" r="4.2"/><circle cx="540" cy="88" r="4.2"/>
+              <circle cx="572" cy="76" r="4.2"/><circle cx="572" cy="88" r="4.2"/>
+            </g>
+            <g id="bowls-jade">
+              <circle cx="640" cy="76" r="4.2"/><circle cx="640" cy="88" r="4.2"/>
+              <circle cx="676" cy="76" r="4.2"/><circle cx="676" cy="88" r="4.2"/>
+              <circle cx="712" cy="76" r="4.2"/><circle cx="712" cy="88" r="4.2"/>
+              <circle cx="748" cy="76" r="4.2"/><circle cx="748" cy="88" r="4.2"/>
+              <circle cx="784" cy="76" r="4.2"/><circle cx="784" cy="88" r="4.2"/>
+              <circle cx="820" cy="76" r="4.2"/><circle cx="820" cy="88" r="4.2"/>
+              <circle cx="856" cy="76" r="4.2"/><circle cx="856" cy="88" r="4.2"/>
+              <circle cx="892" cy="76" r="4.2"/><circle cx="892" cy="88" r="4.2"/>
+            </g>
+          </g>
+
+          <!-- 座位小人模板 -->
+          <g id="seat-red" fill="#8b1a1a">
+            <circle cx="0" cy="0" r="5.5"/>
+            <rect x="-5" y="6" width="10" height="9" rx="2.5"/>
+            <rect x="-6" y="16" width="12" height="4" rx="1" fill="#5c2e14"/>
+            <rect x="-5" y="20" width="2.2" height="6" rx="1" fill="#5c2e14"/>
+            <rect x="2.8" y="20" width="2.2" height="6" rx="1" fill="#5c2e14"/>
+          </g>
+          <g id="seat-gold" fill="#8b5a1e">
+            <circle cx="0" cy="0" r="5.5"/>
+            <rect x="-5" y="6" width="10" height="9" rx="2.5"/>
+            <rect x="-6" y="16" width="12" height="4" rx="1" fill="#5c2e14"/>
+            <rect x="-5" y="20" width="2.2" height="6" rx="1" fill="#5c2e14"/>
+            <rect x="2.8" y="20" width="2.2" height="6" rx="1" fill="#5c2e14"/>
+          </g>
+          <g id="seat-jade" fill="#1f4638">
+            <circle cx="0" cy="0" r="5.5"/>
+            <rect x="-5" y="6" width="10" height="9" rx="2.5"/>
+            <rect x="-6" y="16" width="12" height="4" rx="1" fill="#5c2e14"/>
+            <rect x="-5" y="20" width="2.2" height="6" rx="1" fill="#5c2e14"/>
+            <rect x="2.8" y="20" width="2.2" height="6" rx="1" fill="#5c2e14"/>
+          </g>
+
+          <!-- 上排座位 -->
+          <use href="#seat-red" x="160" y="42"/><use href="#seat-red" x="188" y="42"/><use href="#seat-red" x="216" y="42"/><use href="#seat-red" x="244" y="42"/><use href="#seat-red" x="272" y="42"/><use href="#seat-red" x="300" y="42"/><use href="#seat-red" x="328" y="42"/>
+          <use href="#seat-gold" x="380" y="42"/><use href="#seat-gold" x="412" y="42"/><use href="#seat-gold" x="444" y="42"/><use href="#seat-gold" x="476" y="42"/><use href="#seat-gold" x="508" y="42"/><use href="#seat-gold" x="540" y="42"/><use href="#seat-gold" x="572" y="42"/>
+          <use href="#seat-jade" x="640" y="42"/><use href="#seat-jade" x="676" y="42"/><use href="#seat-jade" x="712" y="42"/><use href="#seat-jade" x="748" y="42"/><use href="#seat-jade" x="784" y="42"/><use href="#seat-jade" x="820" y="42"/><use href="#seat-jade" x="856" y="42"/><use href="#seat-jade" x="892" y="42"/>
+
+          <!-- 下排座位（镜像） -->
+          <g transform="translate(0,164) scale(1,-1)">
+            <use href="#seat-red" x="160" y="42"/><use href="#seat-red" x="188" y="42"/><use href="#seat-red" x="216" y="42"/><use href="#seat-red" x="244" y="42"/><use href="#seat-red" x="272" y="42"/><use href="#seat-red" x="300" y="42"/><use href="#seat-red" x="328" y="42"/>
+            <use href="#seat-gold" x="380" y="42"/><use href="#seat-gold" x="412" y="42"/><use href="#seat-gold" x="444" y="42"/><use href="#seat-gold" x="476" y="42"/><use href="#seat-gold" x="508" y="42"/><use href="#seat-gold" x="540" y="42"/><use href="#seat-gold" x="572" y="42"/>
+            <use href="#seat-jade" x="640" y="42"/><use href="#seat-jade" x="676" y="42"/><use href="#seat-jade" x="712" y="42"/><use href="#seat-jade" x="748" y="42"/><use href="#seat-jade" x="784" y="42"/><use href="#seat-jade" x="820" y="42"/><use href="#seat-jade" x="856" y="42"/><use href="#seat-jade" x="892" y="42"/>
+          </g>
+
+          <!-- 龙头 -->
+          <g transform="translate(8,36)" filter="url(#soft)">
+            <path d="M118 48 C108 18, 78 6, 48 16 C28 24, 12 40, 16 58 C20 78, 44 88, 74 82 C96 76, 112 64, 118 48Z" fill="url(#dragonBody)"/>
+            <path d="M118 48 L132 52 L118 58Z" fill="#3a1a0a"/>
+            <path d="M40 28 C56 16, 78 14, 96 24" fill="none" stroke="#d4a843" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M36 36 C52 26, 74 24, 92 32" fill="none" stroke="#e8c96a" stroke-width="1.4" stroke-linecap="round" opacity="0.7"/>
+            <circle cx="56" cy="46" r="5.5" fill="#f5efe6"/>
+            <circle cx="56" cy="46" r="2.6" fill="#1a0c06"/>
+            <circle cx="57.2" cy="44.8" r="1" fill="#fff"/>
+            <path d="M28 52 L8 46 M26 58 L4 58 M28 64 L8 70" stroke="#d4a843" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M88 72 Q108 84 122 74" fill="none" stroke="#d4a843" stroke-width="2" stroke-linecap="round"/>
+            <path d="M70 70 Q86 78 100 72" fill="none" stroke="#e8c96a" stroke-width="1.3" opacity="0.65"/>
+            <!-- 角 -->
+            <path d="M52 18 L46 4 L58 14Z" fill="#8a4a28"/>
+            <path d="M68 14 L66 0 L76 12Z" fill="#6b3a22"/>
+          </g>
+
+          <!-- 可点击分区（无图上文字，标签在下方） -->
           <g class="zone" data-zone="red" data-tip="龙头主桌（红）|长辈居首，桌首设龙首木雕，象征尊长与福源">
-            <rect class="zone-overlay" x="92" y="16" width="132" height="58" rx="4"/>
-            <text class="zone-label" x="158" y="100" text-anchor="middle" fill="#8b1a1a">龙头主桌</text>
+            <rect class="zone-overlay" x="132" y="28" width="220" height="108" rx="6"/>
+            <text class="zone-label" x="242" y="156" text-anchor="middle" fill="#8b1a1a">龙头主桌</text>
           </g>
           <g class="zone" data-zone="gold" data-tip="宾客席（金）|中青年宾客就座，宴席主体与交流核心">
-            <rect class="zone-overlay" x="224" y="16" width="168" height="58" rx="4"/>
-            <text class="zone-label" x="308" y="100" text-anchor="middle" fill="#8b5a1e">宾客席</text>
+            <rect class="zone-overlay" x="352" y="28" width="260" height="108" rx="6"/>
+            <text class="zone-label" x="482" y="156" text-anchor="middle" fill="#8b5a1e">宾客席</text>
           </g>
           <g class="zone" data-zone="jade" data-tip="晚辈席（青）|孩童与晚辈就座，承接福气与传承">
-            <rect class="zone-overlay" x="392" y="16" width="210" height="58" rx="4"/>
-            <text class="zone-label" x="497" y="100" text-anchor="middle" fill="#1f4638">晚辈席</text>
+            <rect class="zone-overlay" x="612" y="28" width="310" height="108" rx="6"/>
+            <text class="zone-label" x="767" y="156" text-anchor="middle" fill="#1f4638">晚辈席</text>
           </g>
         </svg>
       </div>
