@@ -39,21 +39,10 @@
   font-display: swap;
 }
 
-@font-face {
-  font-family: '华文行楷';
-  src: local('华文行楷'),
-       local('STXingkai'),
-       local('STXINGKA');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --font-cover-headline: '汉仪大标宋', 'HYDaBiaoSongJ', 'HYDaBiaoSong', 'SimSun', serif;
   --font-cover-subtitle: '禹卫书法行书', 'YuweiXingshu', 'YWShuFengXingShuJ', 'KaiTi', cursive;
   --font-act-header: '方正小标宋', 'FZXiaoBiaoSong', 'FZXBSJW', 'SimSun', serif;
-  --font-quote-xingkai: '华文行楷', 'STXingkai', 'STXINGKA', 'Ma Shan Zheng', cursive;
   --color-cover-subtitle: #1a6fb5;
   --bg-base: #f5efe6;
   --bg-dark: #ebe3d6;
@@ -2551,13 +2540,14 @@ body.pattern-modal-open {
   margin: 24px 0 28px;
 }
 
-.act-media video {
+.act-media video,
+.act-media img {
   display: block;
   width: 100%;
   max-width: 100%;
   height: auto;
   border-radius: 4px;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .act-media-grid {
