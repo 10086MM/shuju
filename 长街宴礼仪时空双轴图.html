@@ -172,10 +172,10 @@
     }
 
     .zone-label {
-      font-family: 'Noto Serif SC', serif;
-      font-size: 11px;
+      font-family: 'Noto Serif SC', 'PingFang SC', 'Microsoft YaHei', serif;
+      font-size: 13px;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       pointer-events: none;
     }
 
@@ -438,20 +438,71 @@
       </div>
 
       <div class="banquet">
-        <svg class="banquet-svg" viewBox="0 0 606 108" role="img" aria-label="长街宴龙舟席位示意" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-          <image href="image/礼仪/dragon-boat-banquet.jpg" xlink:href="image/礼仪/dragon-boat-banquet.jpg" x="0" y="0" width="606" height="84" preserveAspectRatio="xMidYMid meet"/>
+        <svg class="banquet-svg" viewBox="0 0 606 108" role="img" aria-label="长街宴龙舟席位示意" xmlns="http://www.w3.org/2000/svg">
+          <!-- 清晰矢量席位示意（替代低清位图，并去掉图上原有小字） -->
+          <defs>
+            <linearGradient id="boatRed" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e07060"/><stop offset="100%" stop-color="#8b1a1a"/>
+            </linearGradient>
+            <linearGradient id="boatGold" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f0d78a"/><stop offset="100%" stop-color="#b8862a"/>
+            </linearGradient>
+            <linearGradient id="boatJade" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#7ec9a8"/><stop offset="100%" stop-color="#2f5a4a"/>
+            </linearGradient>
+            <linearGradient id="dragonGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#c44a3a"/><stop offset="100%" stop-color="#6e1212"/>
+            </linearGradient>
+          </defs>
+
+          <!-- 桌面三段 -->
+          <rect x="88" y="34" width="140" height="22" rx="3" fill="url(#boatRed)"/>
+          <rect x="228" y="34" width="168" height="22" rx="3" fill="url(#boatGold)"/>
+          <rect x="396" y="34" width="196" height="22" rx="3" fill="url(#boatJade)"/>
+
+          <!-- 龙头 -->
+          <g transform="translate(8,18)">
+            <path d="M78 28 C70 10, 48 4, 28 12 C16 18, 8 28, 10 40 C12 52, 28 58, 48 54 C62 50, 74 42, 78 28Z" fill="url(#dragonGrad)"/>
+            <path d="M22 22 C30 14, 44 12, 54 18" fill="none" stroke="#f0d78a" stroke-width="1.5" stroke-linecap="round"/>
+            <circle cx="34" cy="30" r="3.2" fill="#f5efe6"/>
+            <circle cx="34" cy="30" r="1.4" fill="#3d2b1f"/>
+            <path d="M12 36 L2 32 M12 40 L0 40 M12 44 L2 48" stroke="#e8c96a" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M56 48 Q68 56 78 50" fill="none" stroke="#f0d78a" stroke-width="1.4"/>
+          </g>
+
+          <!-- 席位小人与碗碟（红/金/青） -->
+          <g fill="#8b1a1a">
+            <g transform="translate(104,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(132,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(160,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(188,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+          </g>
+          <g fill="#8b5a1e">
+            <g transform="translate(244,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(276,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(308,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(340,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(372,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+          </g>
+          <g fill="#1f4638">
+            <g transform="translate(412,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(448,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(484,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(520,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+            <g transform="translate(556,20)"><circle cx="6" cy="4" r="3.2"/><rect x="2" y="8" width="8" height="7" rx="2"/><circle cx="6" cy="28" r="2.4" opacity=".35"/><circle cx="6" cy="40" r="3.2"/><rect x="2" y="44" width="8" height="7" rx="2"/></g>
+          </g>
 
           <g class="zone" data-zone="red" data-tip="龙头主桌（红）|长辈居首，桌首设龙首木雕，象征尊长与福源">
-            <rect class="zone-overlay" x="92" y="16" width="132" height="58" rx="4"/>
+            <rect class="zone-overlay" x="88" y="12" width="140" height="62" rx="4"/>
             <text class="zone-label" x="158" y="100" text-anchor="middle" fill="#8b1a1a">龙头主桌</text>
           </g>
           <g class="zone" data-zone="gold" data-tip="宾客席（金）|中青年宾客就座，宴席主体与交流核心">
-            <rect class="zone-overlay" x="224" y="16" width="168" height="58" rx="4"/>
-            <text class="zone-label" x="308" y="100" text-anchor="middle" fill="#8b5a1e">宾客席</text>
+            <rect class="zone-overlay" x="228" y="12" width="168" height="62" rx="4"/>
+            <text class="zone-label" x="312" y="100" text-anchor="middle" fill="#8b5a1e">宾客席</text>
           </g>
           <g class="zone" data-zone="jade" data-tip="晚辈席（青）|孩童与晚辈就座，承接福气与传承">
-            <rect class="zone-overlay" x="392" y="16" width="210" height="58" rx="4"/>
-            <text class="zone-label" x="497" y="100" text-anchor="middle" fill="#1f4638">晚辈席</text>
+            <rect class="zone-overlay" x="396" y="12" width="196" height="62" rx="4"/>
+            <text class="zone-label" x="494" y="100" text-anchor="middle" fill="#1f4638">晚辈席</text>
           </g>
         </svg>
       </div>
