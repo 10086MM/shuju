@@ -14,7 +14,8 @@
     '.timeline'
   ].join(', ');
 
-  var GAP_MS = 32;
+  var MAX_CONCURRENT = 4; /* 同屏模块内并行，避免一张一张拖慢 */
+  var GAP_MS = 0;
   var states = [];
   var moduleQueue = [];
   var currentState = null;
@@ -22,6 +23,7 @@
   var moduleObserver = null;
   var scrollBound = false;
   var scrollRaf = 0;
+  var activeJobs = 0;
 
   function findModule(el) {
     if (!el || !el.closest) return document.body;
@@ -117,7 +119,7 @@
         if (!entry.isIntersecting) return;
         boostModule(entry.target);
       });
-    }, { rootMargin: '120px 0px', threshold: [0.05, 0.2, 0.45] });
+    }, { rootMargin: '320px 0px', threshold: [0.01, 0.15, 0.4] });
     return moduleObserver;
   }
 
@@ -152,22 +154,45 @@
   }
 
   function runModuleJobs(state, onDone) {
-    function next() {
+    var finished = false;
+    var inFlight = 0;
+
+    function finish(preempted) {
+      if (finished) return;
+      finished = true;
+      onDone(!!preempted);
+    }
+
+    function pump() {
+      if (finished) return;
       if (state.preempt) {
         state.preempt = false;
-        onDone(true);
+        if (inFlight === 0) finish(true);
         return;
       }
-      if (!state.jobs.length) {
-        onDone(false);
+      if (!state.jobs.length && inFlight === 0) {
+        finish(false);
         return;
       }
-      var job = state.jobs.shift();
-      job(function () {
-        global.setTimeout(next, GAP_MS);
-      });
+      while (!state.preempt && state.jobs.length && inFlight < MAX_CONCURRENT) {
+        (function () {
+          var job = state.jobs.shift();
+          inFlight += 1;
+          activeJobs += 1;
+          job(function () {
+            inFlight -= 1;
+            activeJobs -= 1;
+            if (GAP_MS > 0) global.setTimeout(pump, GAP_MS);
+            else pump();
+          });
+        })();
+      }
+      if (state.preempt && inFlight === 0) {
+        state.preempt = false;
+        finish(true);
+      }
     }
-    next();
+    pump();
   }
 
   function pumpModules() {
