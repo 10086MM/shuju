@@ -4295,20 +4295,19 @@ body.souvenir-modal-open {
   overflow-x: auto;
   overflow-y: hidden;
   padding: clamp(24px, 5vh, 48px) 0 clamp(32px, 6vh, 56px);
-  scroll-snap-type: x proximity;
+  /* 关闭强制吸附，改由 JS 精确居中，避免末张被 snap 拉歪 */
+  scroll-snap-type: none;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
   cursor: grab;
   scrollbar-width: thin;
   scrollbar-color: rgba(212, 168, 67, 0.45) transparent;
-  /* 让 3D 变换后的侧卡不抢两侧箭头点击 */
   isolation: isolate;
   z-index: 1;
 }
 
 .pattern-coverflow__viewport.is-dragging {
   cursor: grabbing;
-  scroll-snap-type: none;
 }
 
 @media (max-width: 520px) {
@@ -4324,15 +4323,23 @@ body.souvenir-modal-open {
   display: flex;
   align-items: center;
   gap: clamp(20px, 4vw, 36px);
-  /* 左右留白由 JS 按实卡片宽度写入，保证首末张都能居中 */
   padding: 0;
-  box-sizing: border-box;
-  transform-style: preserve-3d;
+  box-sizing: content-box;
+  position: relative;
+  transform-style: flat;
+}
+
+.pattern-coverflow__spacer {
+  flex: 0 0 0;
+  width: 0;
+  min-width: 0;
+  height: 1px;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .pattern-coverflow__card {
   flex: 0 0 min(76vw, 300px);
-  scroll-snap-align: center;
   border: none;
   padding: 0;
   background: none;

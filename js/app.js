@@ -1627,6 +1627,13 @@
     var nextBtn = root.querySelector('.pattern-coverflow__nav--next');
     var cards = [];
     var drag = { active: false, moved: false, startX: 0, scrollLeft: 0 };
+    var startSpacer = document.createElement('div');
+    var endSpacer = document.createElement('div');
+    startSpacer.className = 'pattern-coverflow__spacer';
+    endSpacer.className = 'pattern-coverflow__spacer';
+    startSpacer.setAttribute('aria-hidden', 'true');
+    endSpacer.setAttribute('aria-hidden', 'true');
+    track.appendChild(startSpacer);
 
     INNOVATION_FILES.forEach(function (file, index) {
       var meta = INNOVATION_DATA[index] || { name: '创新纹样', meaning: '' };
@@ -1661,13 +1668,22 @@
       track.appendChild(card);
       cards.push(card);
     });
+    track.appendChild(endSpacer);
 
-    function syncEdgePadding() {
-      if (!cards.length) return;
-      var cardW = cards[0].offsetWidth || Math.min(window.innerWidth * 0.76, 300);
-      var pad = Math.max(0, Math.round((viewport.clientWidth - cardW) / 2));
-      track.style.paddingLeft = pad + 'px';
-      track.style.paddingRight = pad + 'px';
+    function cardLayoutWidth() {
+      if (!cards.length) return Math.min(window.innerWidth * 0.76, 300);
+      /* offsetWidth 不受 3D transform 影响，是布局宽度 */
+      return cards[0].offsetWidth || Math.min(window.innerWidth * 0.76, 300);
+    }
+
+    function syncEdgeSpacers() {
+      var pad = Math.max(0, Math.round((viewport.clientWidth - cardLayoutWidth()) / 2));
+      startSpacer.style.flex = '0 0 ' + pad + 'px';
+      endSpacer.style.flex = '0 0 ' + pad + 'px';
+      startSpacer.style.width = pad + 'px';
+      endSpacer.style.width = pad + 'px';
+      startSpacer.style.minWidth = pad + 'px';
+      endSpacer.style.minWidth = pad + 'px';
     }
 
     function getCenterIndex() {
@@ -1687,16 +1703,55 @@
     }
 
     function scrollToIndex(index, smooth) {
-      syncEdgePadding();
       var i = Math.max(0, Math.min(cards.length - 1, index));
       var card = cards[i];
       if (!card) return;
+
+      syncEdgeSpacers();
       void track.offsetWidth;
+
+      /*
+       * 关键 transform 再量布局位置：3D transform 会污染 getBoundingClientRect，
+       * 也会让部分浏览器的 scrollWidth / offsetLeft 表现异常。
+       */
+      var savedTransforms = cards.map(function (c) { return c.style.transform; });
+      cards.forEach(function (c) { c.style.transform = 'none'; });
+      void track.offsetWidth;
+
       var target = card.offsetLeft + card.offsetWidth / 2 - viewport.clientWidth / 2;
       var maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+
+      /* 若仍轧到尽头却还没居中，加大末侧 spacer 再量一次 */
+      if (i === cards.length - 1 && target > maxScroll + 0.5) {
+        var need = Math.ceil(target - maxScroll + 2);
+        var cur = endSpacer.offsetWidth || 0;
+        endSpacer.style.flex = '0 0 ' + (cur + need) + 'px';
+        endSpacer.style.width = (cur + need) + 'px';
+        endSpacer.style.minWidth = (cur + need) + 'px';
+        void track.offsetWidth;
+        target = card.offsetLeft + card.offsetWidth / 2 - viewport.clientWidth / 2;
+        maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+      }
+      if (i === 0 && target < -0.5) {
+        var needL = Math.ceil(-target + 2);
+        var curL = startSpacer.offsetWidth || 0;
+        startSpacer.style.flex = '0 0 ' + (curL + needL) + 'px';
+        startSpacer.style.width = (curL + needL) + 'px';
+        startSpacer.style.minWidth = (curL + needL) + 'px';
+        void track.offsetWidth;
+        target = card.offsetLeft + card.offsetWidth / 2 - viewport.clientWidth / 2;
+        maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+      }
+
       target = Math.max(0, Math.min(maxScroll, target));
       viewport.scrollTo({ left: target, behavior: smooth ? 'smooth' : 'auto' });
-      window.setTimeout(updateCoverflow, smooth ? 420 : 0);
+
+      function restore() {
+        cards.forEach(function (c, n) { c.style.transform = savedTransforms[n] || ''; });
+        updateCoverflow();
+      }
+      if (smooth) window.setTimeout(restore, 420);
+      else restore();
     }
 
     function snapToNearest() {
@@ -1706,35 +1761,32 @@
     function updateCoverflow() {
       var rect = viewport.getBoundingClientRect();
       var centerX = rect.left + rect.width / 2;
-      var maxDist = rect.width * 0.55;
+      var maxDist = Math.max(rect.width * 0.55, 1);
 
       cards.forEach(function (card) {
         var cr = card.getBoundingClientRect();
         var dist = (cr.left + cr.width / 2 - centerX) / maxDist;
         dist = Math.max(-1, Math.min(1, dist));
         var abs = Math.abs(dist);
-        var rotateY = dist * -52;
-        var scale = 0.72 + (1 - abs) * 0.28;
-        var translateZ = (1 - abs) * 80 - 30;
+        var rotateY = dist * -42;
+        var scale = 0.78 + (1 - abs) * 0.22;
+        var translateZ = (1 - abs) * 48;
         card.style.transform = 'rotateY(' + rotateY.toFixed(1) + 'deg) translateZ(' + translateZ.toFixed(0) + 'px) scale(' + scale.toFixed(3) + ')';
-        card.style.opacity = (0.35 + (1 - abs) * 0.65).toFixed(2);
+        card.style.opacity = (0.4 + (1 - abs) * 0.6).toFixed(2);
         card.style.zIndex = String(Math.round((1 - abs) * 100));
-        card.classList.toggle('is-center', abs < 0.18);
+        card.classList.toggle('is-center', abs < 0.2);
       });
 
       var scrollMax = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
-      if (scrollMax > 0) {
-        progressBar.style.width = (viewport.scrollLeft / scrollMax * 100) + '%';
-      } else {
-        progressBar.style.width = '100%';
-      }
+      progressBar.style.width = scrollMax > 0
+        ? (viewport.scrollLeft / scrollMax * 100) + '%'
+        : '100%';
     }
 
     viewport.addEventListener('scroll', updateCoverflow, { passive: true });
     window.addEventListener('resize', function () {
-      syncEdgePadding();
+      syncEdgeSpacers();
       scrollToIndex(getCenterIndex(), false);
-      updateCoverflow();
     });
 
     viewport.addEventListener('pointerdown', function (e) {
@@ -1786,7 +1838,6 @@
       scrollToIndex(getCenterIndex() + 1, true);
     });
 
-    /* 点侧卡先居中；点中间卡再看大图 */
     cards.forEach(function (card, index) {
       card.addEventListener('click', function (e) {
         if (drag.moved) return;
@@ -1799,10 +1850,9 @@
     });
 
     requestAnimationFrame(function () {
-      syncEdgePadding();
+      syncEdgeSpacers();
       requestAnimationFrame(function () {
         scrollToIndex(0, false);
-        updateCoverflow();
       });
     });
     observeAnimate(container);
