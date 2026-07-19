@@ -546,9 +546,9 @@ body::after {
   border: none;
   box-shadow: none;
   outline: none;
-  opacity: 1;
-  /* 展示图已填宣纸底色，与页面 --paper-base 一致 */
-  mix-blend-mode: normal;
+  opacity: 0.92;
+  /* 透明线稿直接叠在宣纸花纹上，自然融入 */
+  mix-blend-mode: multiply;
   image-rendering: auto;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
