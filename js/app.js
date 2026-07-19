@@ -2107,7 +2107,6 @@
   var POSTER_SIGN = '以数据看见民俗·赋能乡村振兴';
   var POSTER_SOURCE = '数据来源：红河州文旅局 2023-2025 年度报告、云南省非遗保护中心';
 
-  /* 原来的短预览：只随维度点选更新 */
   var BRIEF_COPY = {
     food: {
       title: '梯田农耕食俗',
@@ -2131,33 +2130,231 @@
     }
   };
 
-  /* 四版海报纪念卡：只在点「生成纪念卡」时写入 */
   var POSTER_COPY = {
     food: {
+      dim: '梯田农耕食俗',
       title: '梯田烟火·一席农味守乡土',
       subtitle: '山地农耕·食材溯源·乡村农产内循环',
       quote: '山林 45%、梯田 35%、市集 20%\n乡土物产完整赋能节庆经济',
       summary: '顺应山水而食，以节庆盘活梯田农业资源'
     },
     costume: {
+      dim: '哈尼服饰非遗',
       title: '衣载山河·纹样藏史',
       subtitle: '多支系服饰活态传承·民族文化多样性留存',
       quote: '一针图腾记迁徙，一袭华服载千年',
       summary: '服饰是可穿戴的非遗，纹样是哈尼的无字史书'
     },
     dance: {
+      dim: '多民族共舞仪式',
       title: '围圈同心·歌舞共生',
       subtitle: '全民共舞仪式·多民族交融公共文化场景',
       quote: '无边界共席共舞，构筑民族团结共同体',
       summary: '以舞为礼、以聚为和，实现村寨共生相融'
     },
     tourism: {
+      dim: '乡村文旅发展',
       title: '古宴新生·非遗破局',
       subtitle: '五维数据复盘·文旅优势与发展短板',
       quote: '经济社会价值突出，文化文创仍待深耕',
       summary: '传统民俗现代化转型，助力村寨增收振兴'
     }
   };
+
+  function setField(root, name, value) {
+    var el = root.querySelector('[data-field="' + name + '"]');
+    if (el) el.textContent = value;
+  }
+
+  function wrapLines(ctx, text, maxWidth) {
+    var lines = [];
+    String(text || '').split('\n').forEach(function (para) {
+      if (!para) {
+        lines.push('');
+        return;
+      }
+      var line = '';
+      for (var i = 0; i < para.length; i++) {
+        var test = line + para[i];
+        if (ctx.measureText(test).width > maxWidth && line) {
+          lines.push(line);
+          line = para[i];
+        } else {
+          line = test;
+        }
+      }
+      if (line) lines.push(line);
+    });
+    return lines;
+  }
+
+  function drawCornerOrnament(ctx, x, y, size, flipX, flipY) {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.scale(flipX ? -1 : 1, flipY ? -1 : 1);
+    ctx.strokeStyle = 'rgba(168, 120, 42, 0.55)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(0, size);
+    ctx.lineTo(0, 0);
+    ctx.lineTo(size, 0);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(8, size);
+    ctx.lineTo(8, 8);
+    ctx.lineTo(size, 8);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  function renderSouvenirCanvas(data) {
+    var W = 900;
+    var H = 1280;
+    var canvas = document.createElement('canvas');
+    canvas.width = W;
+    canvas.height = H;
+    var ctx = canvas.getContext('2d');
+
+    var g = ctx.createLinearGradient(0, 0, W, H);
+    g.addColorStop(0, '#f8f1e4');
+    g.addColorStop(0.45, '#f3e8d6');
+    g.addColorStop(1, '#efe0c8');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.fillStyle = 'rgba(139, 26, 26, 0.025)';
+    for (var gy = 40; gy < H; gy += 72) {
+      for (var gx = 40; gx < W; gx += 72) {
+        ctx.beginPath();
+        ctx.arc(gx, gy, 10, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    ctx.strokeStyle = '#b8893a';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(36, 36, W - 72, H - 72);
+    ctx.strokeStyle = 'rgba(139, 90, 30, 0.35)';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(48, 48, W - 96, H - 96);
+
+    drawCornerOrnament(ctx, 68, 68, 42, false, false);
+    drawCornerOrnament(ctx, W - 68, 68, 42, true, false);
+    drawCornerOrnament(ctx, 68, H - 68, 42, false, true);
+    drawCornerOrnament(ctx, W - 68, H - 68, 42, true, true);
+
+    var cx = W / 2;
+    var y = 120;
+
+    ctx.fillStyle = '#8b1a1a';
+    ctx.font = '600 28px "Noto Serif SC", serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('哈尼长街宴', cx, y);
+    y += 42;
+
+    ctx.fillStyle = 'rgba(139, 90, 30, 0.75)';
+    ctx.font = '400 22px "Noto Serif SC", serif';
+    ctx.fillText(data.dim || '', cx, y);
+    y += 36;
+
+    ctx.strokeStyle = 'rgba(184, 137, 58, 0.45)';
+    ctx.beginPath();
+    ctx.moveTo(cx - 80, y);
+    ctx.lineTo(cx + 80, y);
+    ctx.stroke();
+    y += 70;
+
+    ctx.fillStyle = '#3d2b1f';
+    ctx.font = '700 52px "Ma Shan Zheng", "Noto Serif SC", cursive';
+    wrapLines(ctx, data.title, W - 160).forEach(function (line) {
+      ctx.fillText(line, cx, y);
+      y += 66;
+    });
+    y += 18;
+
+    ctx.fillStyle = 'rgba(61, 43, 31, 0.5)';
+    ctx.font = '400 24px "Noto Serif SC", serif';
+    wrapLines(ctx, data.subtitle, W - 180).forEach(function (line) {
+      ctx.fillText(line, cx, y);
+      y += 36;
+    });
+    y += 36;
+
+    ctx.strokeStyle = 'rgba(184, 137, 58, 0.55)';
+    ctx.beginPath();
+    ctx.moveTo(cx - 160, y);
+    ctx.lineTo(cx - 18, y);
+    ctx.moveTo(cx + 18, y);
+    ctx.lineTo(cx + 160, y);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(cx, y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = '#b8893a';
+    ctx.fill();
+    y += 64;
+
+    ctx.fillStyle = '#2a1f16';
+    ctx.font = '700 40px "Noto Serif SC", serif';
+    wrapLines(ctx, data.quote, W - 170).forEach(function (line) {
+      ctx.fillText(line, cx, y);
+      y += 56;
+    });
+    y += 42;
+
+    ctx.strokeStyle = 'rgba(184, 137, 58, 0.28)';
+    ctx.beginPath();
+    ctx.moveTo(cx - 100, y);
+    ctx.lineTo(cx + 100, y);
+    ctx.stroke();
+    y += 54;
+
+    ctx.fillStyle = 'rgba(61, 43, 31, 0.72)';
+    ctx.font = '400 28px "Noto Serif SC", serif';
+    wrapLines(ctx, data.summary, W - 190).forEach(function (line) {
+      ctx.fillText(line, cx, y);
+      y += 42;
+    });
+
+    y = Math.max(y + 70, H - 240);
+    ctx.fillStyle = '#a8782a';
+    ctx.font = '600 26px "Noto Serif SC", serif';
+    ctx.fillText(POSTER_SIGN, cx, y);
+    y += 40;
+
+    ctx.fillStyle = 'rgba(61, 43, 31, 0.4)';
+    ctx.font = '400 16px "Noto Serif SC", serif';
+    wrapLines(ctx, POSTER_SOURCE, W - 200).forEach(function (line) {
+      ctx.fillText(line, cx, y);
+      y += 24;
+    });
+
+    var sealX = W - 168;
+    var sealY = H - 210;
+    ctx.save();
+    ctx.translate(sealX, sealY);
+    ctx.rotate(-0.12);
+    ctx.strokeStyle = 'rgba(139, 26, 26, 0.78)';
+    ctx.fillStyle = 'rgba(139, 26, 26, 0.08)';
+    ctx.lineWidth = 3;
+    ctx.strokeRect(-42, -42, 84, 84);
+    ctx.fillRect(-42, -42, 84, 84);
+    ctx.fillStyle = 'rgba(139, 26, 26, 0.82)';
+    ctx.font = '700 30px "Noto Serif SC", serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('长', 0, -14);
+    ctx.fillText('街', 0, 18);
+    ctx.restore();
+
+    return canvas;
+  }
+
+  function downloadPng(canvas, filename) {
+    var link = document.createElement('a');
+    link.download = filename;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
 
   function initPoster() {
     var root = document.getElementById('memory-poster');
@@ -2168,15 +2365,10 @@
     var briefScore = root.querySelector('.memory-poster__brief-score');
     var briefFooter = root.querySelector('.memory-poster__brief-footer');
 
-    var preview = root.querySelector('.memory-poster__preview');
-    var titleEl = root.querySelector('.memory-poster__card-title');
-    var subtitleEl = root.querySelector('.memory-poster__card-subtitle');
-    var quoteEl = root.querySelector('.memory-poster__card-quote');
-    var summaryEl = root.querySelector('.memory-poster__card-summary');
-    var signEl = root.querySelector('.memory-poster__card-sign');
-    var sourceEl = root.querySelector('.memory-poster__card-source');
-
+    var result = root.querySelector('.memory-poster__result');
+    var card = root.querySelector('#souvenir-card');
     var selected = 'food';
+    var lastGenerated = null;
 
     function updateBrief(key) {
       var data = BRIEF_COPY[key];
@@ -2194,21 +2386,24 @@
         btn.classList.toggle('is-active', btn.getAttribute('data-key') === key);
       });
       updateBrief(key);
-      /* 不改动已生成纪念卡，两套互不覆盖 */
     }
 
     function generatePoster(key) {
       var data = POSTER_COPY[key];
-      if (!data || !preview) return;
-      titleEl.textContent = data.title;
-      subtitleEl.textContent = data.subtitle;
-      quoteEl.textContent = data.quote;
-      summaryEl.textContent = data.summary;
-      if (signEl) signEl.textContent = POSTER_SIGN;
-      if (sourceEl) sourceEl.textContent = POSTER_SOURCE;
-      preview.hidden = false;
-      preview.classList.add('is-generated');
-      preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      if (!data || !result || !card) return;
+      lastGenerated = { key: key, data: data };
+      setField(card, 'dim', data.dim);
+      setField(card, 'title', data.title);
+      setField(card, 'subtitle', data.subtitle);
+      setField(card, 'quote', data.quote);
+      setField(card, 'summary', data.summary);
+      setField(card, 'sign', POSTER_SIGN);
+      setField(card, 'source', POSTER_SOURCE);
+      result.hidden = false;
+      result.classList.remove('is-revealed');
+      void result.offsetWidth;
+      result.classList.add('is-revealed');
+      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     root.querySelectorAll('.memory-poster__option').forEach(function (btn) {
@@ -2221,6 +2416,23 @@
     if (genBtn) {
       genBtn.addEventListener('click', function () {
         generatePoster(selected);
+      });
+    }
+
+    var dlBtn = root.querySelector('.memory-poster__download');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', function () {
+        if (!lastGenerated) return;
+        var run = function () {
+          var canvas = renderSouvenirCanvas(lastGenerated.data);
+          var name = '哈尼长街宴-纪念卡-' + (lastGenerated.data.dim || '文化观察') + '.png';
+          downloadPng(canvas, name);
+        };
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(run).catch(run);
+        } else {
+          run();
+        }
       });
     }
 

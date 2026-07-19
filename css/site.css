@@ -785,8 +785,6 @@ body .media-placeholder__hint,
 body .radar-insights__conclusion,
 body .memory-poster__intro,
 body .memory-poster__brief-line,
-body .memory-poster__card-quote,
-body .memory-poster__card-summary,
 body .article-quote,
 body .chart-title,
 body .chart-caption-inner,
@@ -884,13 +882,10 @@ body .footer-ethnic {
   color: rgba(212, 168, 67, 0.75);
 }
 
-body .memory-poster__card-subtitle,
-body .memory-poster__card-source,
 body .memory-poster__brief-footer {
   color: var(--text-body-muted);
 }
 
-body .memory-poster__card-sign,
 body .memory-poster__brief-score {
   color: var(--accent-gold);
 }
@@ -3537,69 +3532,235 @@ body.pattern-modal-open {
   letter-spacing: 0.08em;
 }
 
-.memory-poster__preview {
-  margin-top: 28px;
-  padding: clamp(28px, 4vw, 40px) clamp(16px, 3vw, 28px);
-  background: transparent;
-  border: none;
+.memory-poster__result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  margin-top: 32px;
   opacity: 0;
-  transform: scale(0.98);
-  transition: opacity 0.35s, transform 0.35s;
+  transform: translateY(18px) scale(0.97);
+  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 0.7, 0.28, 1);
 }
 
-.memory-poster__preview.is-generated {
+.memory-poster__result.is-revealed {
   opacity: 1;
-  transform: scale(1);
+  transform: translateY(0) scale(1);
 }
 
-.memory-poster__card-title {
-  font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
-  font-size: clamp(1.85rem, 4.5vw, 2.55rem);
-  color: var(--highlight-yellow);
-  margin: 0 0 10px;
-  letter-spacing: 0.06em;
+.souvenir-card {
+  position: relative;
+  width: min(100%, 340px);
+  aspect-ratio: 3 / 4.25;
+  isolation: isolate;
 }
 
-.memory-poster__card-subtitle {
-  margin: 0 0 28px;
-  font-size: clamp(0.92rem, 1.8vw, 1.05rem);
-  color: var(--text-body-muted, rgba(61, 43, 31, 0.45));
-  letter-spacing: 0.12em;
-  line-height: 1.6;
+.souvenir-card__shine {
+  position: absolute;
+  inset: -2%;
+  background:
+    radial-gradient(ellipse 70% 45% at 20% 8%, rgba(255, 236, 190, 0.55), transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 90%, rgba(184, 137, 58, 0.12), transparent 55%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-.memory-poster__card-quote {
-  margin: 0 auto 28px;
-  max-width: 28em;
-  font-family: 'Noto Serif SC', 'Songti SC', serif;
-  font-size: clamp(1.35rem, 3.2vw, 1.85rem);
-  font-weight: 700;
-  color: var(--text-body, rgba(61, 43, 31, 0.88));
-  line-height: 1.65;
-  letter-spacing: 0.04em;
-  white-space: pre-line;
+.souvenir-card__frame {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  padding: 9px;
+  background:
+    linear-gradient(145deg, #d8b56a 0%, #a8782a 42%, #e8d09a 58%, #8b6520 100%);
+  box-shadow:
+    0 18px 40px rgba(61, 43, 31, 0.18),
+    0 2px 0 rgba(255, 248, 230, 0.35) inset;
 }
 
-.memory-poster__card-summary {
-  margin: 0 0 18px;
-  font-size: clamp(1.02rem, 2vw, 1.18rem);
-  color: var(--text-body-soft, rgba(61, 43, 31, 0.62));
-  line-height: 1.75;
+.souvenir-card__inner {
+  position: relative;
+  height: 100%;
+  box-sizing: border-box;
+  padding: clamp(22px, 5vw, 28px) clamp(18px, 4vw, 24px) clamp(20px, 4vw, 26px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(255, 252, 245, 0.72), rgba(243, 232, 214, 0.55)),
+    linear-gradient(135deg, #f7f0e4 0%, #f1e5d2 48%, #ead8bc 100%);
+  border: 1px solid rgba(139, 90, 30, 0.22);
+  overflow: hidden;
 }
 
-.memory-poster__card-sign {
-  margin: 0 0 14px;
-  font-size: clamp(0.95rem, 1.7vw, 1.05rem);
-  color: var(--accent-gold);
-  letter-spacing: 0.14em;
+.souvenir-card__inner::before,
+.souvenir-card__inner::after {
+  content: '';
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-color: rgba(168, 120, 42, 0.45);
+  border-style: solid;
+  pointer-events: none;
 }
 
-.memory-poster__card-source {
+.souvenir-card__inner::before {
+  top: 10px;
+  left: 10px;
+  border-width: 1.5px 0 0 1.5px;
+}
+
+.souvenir-card__inner::after {
+  right: 10px;
+  bottom: 10px;
+  border-width: 0 1.5px 1.5px 0;
+}
+
+.souvenir-card__head {
+  margin-bottom: 14px;
+}
+
+.souvenir-card__brand {
   margin: 0;
-  font-size: 0.68rem;
-  color: var(--text-body-muted, rgba(61, 43, 31, 0.4));
-  letter-spacing: 0.02em;
-  line-height: 1.5;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: #8b1a1a;
+}
+
+.souvenir-card__dim {
+  margin: 6px 0 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: rgba(139, 90, 30, 0.78);
+}
+
+.souvenir-card__title {
+  margin: 0 0 10px;
+  font-family: 'Ma Shan Zheng', 'Noto Serif SC', cursive;
+  font-size: clamp(1.45rem, 4.2vw, 1.75rem);
+  line-height: 1.35;
+  color: #3d2b1f;
+  letter-spacing: 0.04em;
+}
+
+.souvenir-card__subtitle {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  letter-spacing: 0.08em;
+  color: rgba(61, 43, 31, 0.5);
+}
+
+.souvenir-card__divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 70%;
+  margin: 16px 0;
+}
+
+.souvenir-card__divider span {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184, 137, 58, 0.55), transparent);
+}
+
+.souvenir-card__divider i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #b8893a;
+  flex: 0 0 auto;
+}
+
+.souvenir-card__divider--soft {
+  width: 42%;
+  margin: 14px 0 16px;
+}
+
+.souvenir-card__quote {
+  margin: 0;
+  font-family: 'Noto Serif SC', serif;
+  font-size: clamp(0.98rem, 2.6vw, 1.12rem);
+  font-weight: 700;
+  line-height: 1.7;
+  color: #2a1f16;
+  white-space: pre-line;
+  letter-spacing: 0.03em;
+}
+
+.souvenir-card__summary {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.7;
+  color: rgba(61, 43, 31, 0.72);
+}
+
+.souvenir-card__foot {
+  margin-top: auto;
+  padding-top: 18px;
+  width: 100%;
+}
+
+.souvenir-card__sign {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  color: #a8782a;
+}
+
+.souvenir-card__source {
+  margin: 0;
+  font-size: 0.58rem;
+  line-height: 1.45;
+  color: rgba(61, 43, 31, 0.4);
+}
+
+.souvenir-card__seal {
+  position: absolute;
+  right: 18px;
+  bottom: 52px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid rgba(139, 26, 26, 0.72);
+  color: rgba(139, 26, 26, 0.82);
+  font-family: 'Noto Serif SC', serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  writing-mode: vertical-rl;
+  background: rgba(139, 26, 26, 0.06);
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.memory-poster__download {
+  padding: 10px 26px;
+  background: transparent;
+  border: 1px solid rgba(168, 120, 42, 0.55);
+  color: #8b6520;
+  font-family: inherit;
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.memory-poster__download:hover {
+  background: rgba(184, 137, 58, 0.12);
+  border-color: #a8782a;
+  color: #6b4a18;
+}
+
+@media (max-width: 720px) {
+  .souvenir-card {
+    width: min(100%, 300px);
+  }
 }
 
 

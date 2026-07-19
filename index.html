@@ -713,13 +713,34 @@
         <p class="memory-poster__brief-footer">哈尼长街宴 · 数据新闻观察纪念卡</p>
       </div>
       <button type="button" class="memory-poster__generate">生成纪念卡</button>
-      <div class="memory-poster__preview" hidden>
-        <h4 class="memory-poster__card-title"></h4>
-        <p class="memory-poster__card-subtitle"></p>
-        <p class="memory-poster__card-quote"></p>
-        <p class="memory-poster__card-summary"></p>
-        <p class="memory-poster__card-sign">以数据看见民俗·赋能乡村振兴</p>
-        <p class="memory-poster__card-source">数据来源：红河州文旅局 2023-2025 年度报告、云南省非遗保护中心</p>
+      <div class="memory-poster__result" hidden>
+        <article class="souvenir-card" id="souvenir-card" aria-label="文化观察纪念卡">
+          <div class="souvenir-card__shine" aria-hidden="true"></div>
+          <div class="souvenir-card__frame">
+            <div class="souvenir-card__inner">
+              <header class="souvenir-card__head">
+                <p class="souvenir-card__brand">哈尼长街宴</p>
+                <p class="souvenir-card__dim" data-field="dim"></p>
+              </header>
+              <h4 class="souvenir-card__title" data-field="title"></h4>
+              <p class="souvenir-card__subtitle" data-field="subtitle"></p>
+              <div class="souvenir-card__divider" aria-hidden="true">
+                <span></span><i></i><span></span>
+              </div>
+              <p class="souvenir-card__quote" data-field="quote"></p>
+              <div class="souvenir-card__divider souvenir-card__divider--soft" aria-hidden="true">
+                <span></span>
+              </div>
+              <p class="souvenir-card__summary" data-field="summary"></p>
+              <footer class="souvenir-card__foot">
+                <p class="souvenir-card__sign" data-field="sign">以数据看见民俗·赋能乡村振兴</p>
+                <p class="souvenir-card__source" data-field="source">数据来源：红河州文旅局 2023-2025 年度报告、云南省非遗保护中心</p>
+              </footer>
+              <span class="souvenir-card__seal" aria-hidden="true">长街</span>
+            </div>
+          </div>
+        </article>
+        <button type="button" class="memory-poster__download">下载纪念卡 PNG</button>
       </div>
     </section>
   </article>
