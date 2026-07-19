@@ -2135,7 +2135,8 @@
       dim: '梯田农耕食俗',
       title: '梯田烟火·一席农味守乡土',
       subtitle: '山地农耕·食材溯源·乡村农产内循环',
-      quote: '山林 45%、梯田 35%、市集 20%\n乡土物产完整赋能节庆经济',
+      quoteLead: '山林 45%、梯田 35%、市集 20%',
+      quote: '乡土物产完整赋能节庆经济',
       summary: '顺应山水而食，以节庆盘活梯田农业资源'
     },
     costume: {
@@ -2163,7 +2164,14 @@
 
   function setField(root, name, value) {
     var el = root.querySelector('[data-field="' + name + '"]');
-    if (el) el.textContent = value;
+    if (!el) return;
+    if (value == null || value === '') {
+      el.textContent = '';
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+    el.textContent = value;
   }
 
   function wrapLines(ctx, text, maxWidth) {
@@ -2294,6 +2302,11 @@
     y += 64;
 
     ctx.fillStyle = '#2a1f16';
+    if (data.quoteLead) {
+      ctx.font = '700 28px "Noto Serif SC", serif';
+      ctx.fillText(data.quoteLead, cx, y);
+      y += 48;
+    }
     ctx.font = '700 40px "Noto Serif SC", serif';
     wrapLines(ctx, data.quote, W - 170).forEach(function (line) {
       ctx.fillText(line, cx, y);
@@ -2395,6 +2408,7 @@
       setField(card, 'dim', data.dim);
       setField(card, 'title', data.title);
       setField(card, 'subtitle', data.subtitle);
+      setField(card, 'quoteLead', data.quoteLead || '');
       setField(card, 'quote', data.quote);
       setField(card, 'summary', data.summary);
       setField(card, 'sign', POSTER_SIGN);
