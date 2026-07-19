@@ -547,8 +547,8 @@ body::after {
   box-shadow: none;
   outline: none;
   opacity: 1;
-  /* 原图黑底：与宣纸乘法叠加，露出线稿 */
-  mix-blend-mode: multiply;
+  /* 展示图已填宣纸底色，与页面 --paper-base 一致 */
+  mix-blend-mode: normal;
   image-rendering: auto;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
