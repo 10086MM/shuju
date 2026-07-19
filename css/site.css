@@ -442,10 +442,8 @@ body::after {
 }
 
 .endpage--act3-close {
-  /* 仅收紧与纪念卡之间的空档，不动小人/标语造型 */
-  margin-top: 10px;
   margin-bottom: 0;
-  padding-bottom: clamp(8px, 1.5vh, 20px);
+  padding-bottom: clamp(16px, 3vh, 36px);
   overflow: visible;
 }
 
@@ -453,28 +451,24 @@ body::after {
   margin-bottom: 0;
   display: block;
   width: 100%;
-  padding-top: clamp(24px, 3.5vh, 40px);
-  min-height: 0;
+  /* 给 V 形高低差与头顶留余量 */
+  padding-top: clamp(56px, 10vh, 120px);
+  min-height: clamp(320px, 56vh, 520px);
   box-sizing: border-box;
   overflow: visible;
 }
 
 .endpage--act3-close .footer-ethnic {
-  margin: 0 0 6px;
+  margin: 0 0 clamp(8px, 1.5vh, 18px);
   padding: 0 clamp(16px, 3vw, 32px);
   text-align: center;
   color: #c4a574;
   font-family: 'Ma Shan Zheng', cursive;
   font-size: clamp(1.05rem, 2vw, 1.35rem);
   letter-spacing: 0.28em;
-  transform: none;
+  transform: translateY(-130px);
   position: relative;
   z-index: 4;
-}
-
-.endpage--act3-close .endpage__figures {
-  height: clamp(210px, 34vh, 300px);
-  transform: translateY(0);
 }
 
 .endpage__main {
@@ -610,12 +604,12 @@ body::after {
 
 @media (max-width: 720px) {
   .endpage--act3-close .endpage__scene {
-    min-height: 0;
-    padding-top: clamp(16px, 3vh, 28px);
+    min-height: clamp(260px, 48vh, 380px);
+    padding-top: clamp(40px, 8vh, 80px);
   }
 
-  .endpage--act3-close .endpage__figures {
-    height: clamp(170px, 30vh, 240px);
+  .endpage__figures {
+    height: clamp(220px, 44vh, 320px);
     gap: clamp(2px, 1vw, 8px);
   }
 
@@ -1543,7 +1537,7 @@ html.story-layered .story-panel::before {
     scrollbar-color: rgba(212, 168, 75, 0.4) transparent;
   }
 
-  /* 第三幕：收束贴底；仅压缩文末留白，不影响其它幕 */
+  /* 第三幕以收束贴底，保留溢出可见以免小人头顶被裁 */
   html.story-layered #panel-act3 .story-panel__scroll {
     padding-bottom: 0;
     overflow-x: hidden;
@@ -1554,10 +1548,6 @@ html.story-layered .story-panel::before {
   html.story-layered #panel-act3 .endpage__scene,
   html.story-layered #panel-act3 .endpage__figures {
     overflow: visible;
-  }
-
-  html.story-layered #panel-act3 .story-panel__scroll .article-block {
-    padding-bottom: 12px;
   }
 
   html.story-layered .story-panel__scroll .page,
@@ -3442,10 +3432,13 @@ body.pattern-modal-open {
 }
 
 .memory-poster {
-  margin: 28px 0 4px;
-  padding: clamp(16px, 3vw, 24px) 0 4px;
+  margin: 48px 0 24px;
+  padding: clamp(28px, 5vw, 40px) 0;
   background: transparent;
   text-align: center;
+  overflow: visible;
+  position: relative;
+  z-index: 5;
 }
 
 .memory-poster__heading {
@@ -3498,9 +3491,9 @@ body.pattern-modal-open {
 }
 
 .memory-poster__brief {
-  margin: 4px auto 12px;
+  margin: 8px auto 24px;
   max-width: 36em;
-  padding: 4px 0 0;
+  padding: 8px 0 4px;
 }
 
 .memory-poster__brief-title {
@@ -3542,26 +3535,52 @@ body.pattern-modal-open {
   letter-spacing: 0.08em;
 }
 
+/* 生成区高度只等于按钮；纪念卡浮到中间空白，不挤动标语/小人 */
+.memory-poster__craft {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 6;
+}
+
 .memory-poster__result {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 18px);
+  transform: translateX(-50%) translateY(12px) scale(0.97);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 14px;
-  margin-top: 16px;
-  margin-bottom: 4px;
+  margin: 0;
+  width: max-content;
+  max-width: min(100%, 360px);
   opacity: 0;
-  transform: translateY(18px) scale(0.97);
-  transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 0.7, 0.28, 1);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 0.7, 0.28, 1), visibility 0.45s;
+  z-index: 7;
 }
 
 .memory-poster__result.is-revealed {
   opacity: 1;
-  transform: translateY(0) scale(1);
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.memory-poster__result[hidden] {
+  display: none !important;
+}
+
+.memory-poster__result.is-revealed:not([hidden]) {
+  display: flex;
 }
 
 .souvenir-card {
   position: relative;
-  width: min(100%, 340px);
+  width: min(100%, 300px);
   aspect-ratio: 3 / 4.25;
   isolation: isolate;
 }
