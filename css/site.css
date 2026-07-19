@@ -3535,7 +3535,7 @@ body.pattern-modal-open {
   letter-spacing: 0.08em;
 }
 
-/* 生成按钮仍居中；纪念卡浮在左侧、与简介同高，不挤中间文案 */
+/* 生成按钮居中；纪念卡在左侧，底边对齐按钮底边 */
 .memory-poster__craft {
   position: relative;
   display: flex;
@@ -3546,14 +3546,15 @@ body.pattern-modal-open {
 
 .memory-poster__result {
   position: absolute;
-  left: max(-12vw, -220px);
-  top: clamp(7.5rem, 18%, 11rem);
+  left: max(-14vw, -240px);
   right: auto;
-  transform: translateY(10px) scale(0.97);
+  bottom: 0;
+  top: auto;
+  transform: translateY(8px) scale(0.97);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 0;
   margin: 0;
   width: max-content;
   max-width: min(260px, 34vw);
@@ -3579,6 +3580,19 @@ body.pattern-modal-open {
   display: flex;
 }
 
+.memory-poster__result .souvenir-card {
+  position: relative;
+  z-index: 1;
+}
+
+.memory-poster__result .memory-poster__download {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 10px);
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
 .souvenir-card {
   position: relative;
   width: min(100%, 250px);
@@ -3589,8 +3603,9 @@ body.pattern-modal-open {
 @media (max-width: 900px) {
   .memory-poster__result {
     left: 50%;
-    top: auto;
+    right: auto;
     bottom: auto;
+    top: auto;
     margin-top: 18px;
     position: relative;
     max-width: min(280px, 88vw);
@@ -3599,6 +3614,12 @@ body.pattern-modal-open {
 
   .memory-poster__result.is-revealed {
     transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  .memory-poster__result .memory-poster__download {
+    position: static;
+    transform: none;
+    margin-top: 12px;
   }
 
   .souvenir-card {
