@@ -717,7 +717,7 @@
       ctx.font = '600 17px "Noto Serif SC", serif';
       ctx.textAlign = 'left';
       ctx.textBaseline = 'middle';
-      ctx.fillText(Number(avg).toFixed(2), area.right - 14, y);
+      ctx.fillText(Number(avg).toFixed(2), area.right - 44, y);
       ctx.restore();
     }
   };
