@@ -1662,6 +1662,14 @@
       cards.push(card);
     });
 
+    function syncEdgePadding() {
+      if (!cards.length) return;
+      var cardW = cards[0].offsetWidth || Math.min(window.innerWidth * 0.76, 300);
+      var pad = Math.max(0, Math.round((viewport.clientWidth - cardW) / 2));
+      track.style.paddingLeft = pad + 'px';
+      track.style.paddingRight = pad + 'px';
+    }
+
     function getCenterIndex() {
       var vr = viewport.getBoundingClientRect();
       var centerX = vr.left + vr.width / 2;
@@ -1679,15 +1687,16 @@
     }
 
     function scrollToIndex(index, smooth) {
+      syncEdgePadding();
       var i = Math.max(0, Math.min(cards.length - 1, index));
       var card = cards[i];
       if (!card) return;
-      /* 用布局偏移计算，避免 3D transform 干扰；并钳制到可滚动范围 */
+      void track.offsetWidth;
       var target = card.offsetLeft + card.offsetWidth / 2 - viewport.clientWidth / 2;
       var maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
       target = Math.max(0, Math.min(maxScroll, target));
       viewport.scrollTo({ left: target, behavior: smooth ? 'smooth' : 'auto' });
-      window.setTimeout(updateCoverflow, smooth ? 380 : 0);
+      window.setTimeout(updateCoverflow, smooth ? 420 : 0);
     }
 
     function snapToNearest() {
@@ -1713,14 +1722,17 @@
         card.classList.toggle('is-center', abs < 0.18);
       });
 
-      var scrollMax = track.scrollWidth - viewport.clientWidth;
+      var scrollMax = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
       if (scrollMax > 0) {
         progressBar.style.width = (viewport.scrollLeft / scrollMax * 100) + '%';
+      } else {
+        progressBar.style.width = '100%';
       }
     }
 
     viewport.addEventListener('scroll', updateCoverflow, { passive: true });
     window.addEventListener('resize', function () {
+      syncEdgePadding();
       scrollToIndex(getCenterIndex(), false);
       updateCoverflow();
     });
@@ -1787,8 +1799,11 @@
     });
 
     requestAnimationFrame(function () {
-      scrollToIndex(0, false);
-      updateCoverflow();
+      syncEdgePadding();
+      requestAnimationFrame(function () {
+        scrollToIndex(0, false);
+        updateCoverflow();
+      });
     });
     observeAnimate(container);
   }

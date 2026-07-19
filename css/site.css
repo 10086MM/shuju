@@ -4295,8 +4295,7 @@ body.souvenir-modal-open {
   overflow-x: auto;
   overflow-y: hidden;
   padding: clamp(24px, 5vh, 48px) 0 clamp(32px, 6vh, 56px);
-  scroll-snap-type: x mandatory;
-  scroll-padding-inline: calc(50% - min(38vw, 150px));
+  scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
   cursor: grab;
@@ -4325,7 +4324,9 @@ body.souvenir-modal-open {
   display: flex;
   align-items: center;
   gap: clamp(20px, 4vw, 36px);
-  padding: 0 calc(50% - min(38vw, 150px));
+  /* 左右留白由 JS 按实卡片宽度写入，保证首末张都能居中 */
+  padding: 0;
+  box-sizing: border-box;
   transform-style: preserve-3d;
 }
 
