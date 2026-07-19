@@ -2379,9 +2379,13 @@
     var briefFooter = root.querySelector('.memory-poster__brief-footer');
 
     var modal = document.getElementById('souvenir-modal');
-    var card = root.querySelector('#souvenir-card');
+    var card = document.getElementById('souvenir-card');
     var selected = 'food';
     var lastGenerated = null;
+
+    if (modal && modal.parentElement !== document.body) {
+      document.body.appendChild(modal);
+    }
 
     function updateBrief(key) {
       var data = BRIEF_COPY[key];
@@ -2460,9 +2464,10 @@
       }
     });
 
-    var dlBtn = root.querySelector('.memory-poster__download');
+    var dlBtn = document.querySelector('.memory-poster__download');
     if (dlBtn) {
-      dlBtn.addEventListener('click', function () {
+      dlBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
         if (!lastGenerated) return;
         var run = function () {
           var canvas = renderSouvenirCanvas(lastGenerated.data);
