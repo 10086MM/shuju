@@ -4265,12 +4265,13 @@ body.souvenir-modal-open {
 }
 
 .pattern-coverflow__nav {
+  position: relative;
   flex-shrink: 0;
   width: 40px;
   height: 40px;
   border: 1px solid rgba(212, 168, 67, 0.35);
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.92);
   color: #8b6914;
   font-size: 1.5rem;
   line-height: 1;
@@ -4279,7 +4280,8 @@ body.souvenir-modal-open {
   align-items: center;
   justify-content: center;
   transition: background 0.2s, transform 0.2s;
-  z-index: 2;
+  z-index: 300;
+  pointer-events: auto;
 }
 
 .pattern-coverflow__nav:hover,
@@ -4300,6 +4302,9 @@ body.souvenir-modal-open {
   cursor: grab;
   scrollbar-width: thin;
   scrollbar-color: rgba(212, 168, 67, 0.45) transparent;
+  /* 让 3D 变换后的侧卡不抢两侧箭头点击 */
+  isolation: isolate;
+  z-index: 1;
 }
 
 .pattern-coverflow__viewport.is-dragging {

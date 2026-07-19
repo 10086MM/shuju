@@ -1663,12 +1663,13 @@
     });
 
     function getCenterIndex() {
-      var center = viewport.scrollLeft + viewport.clientWidth / 2;
+      var vr = viewport.getBoundingClientRect();
+      var centerX = vr.left + vr.width / 2;
       var idx = 0;
       var min = Infinity;
       cards.forEach(function (card, i) {
-        var c = card.offsetLeft + card.offsetWidth / 2;
-        var d = Math.abs(c - center);
+        var cr = card.getBoundingClientRect();
+        var d = Math.abs(cr.left + cr.width / 2 - centerX);
         if (d < min) {
           min = d;
           idx = i;
@@ -1681,8 +1682,12 @@
       var i = Math.max(0, Math.min(cards.length - 1, index));
       var card = cards[i];
       if (!card) return;
-      var left = card.offsetLeft - (viewport.clientWidth - card.offsetWidth) / 2;
-      viewport.scrollTo({ left: left, behavior: smooth ? 'smooth' : 'auto' });
+      /* 用布局偏移计算，避免 3D transform 干扰；并钳制到可滚动范围 */
+      var target = card.offsetLeft + card.offsetWidth / 2 - viewport.clientWidth / 2;
+      var maxScroll = Math.max(0, viewport.scrollWidth - viewport.clientWidth);
+      target = Math.max(0, Math.min(maxScroll, target));
+      viewport.scrollTo({ left: target, behavior: smooth ? 'smooth' : 'auto' });
+      window.setTimeout(updateCoverflow, smooth ? 380 : 0);
     }
 
     function snapToNearest() {
@@ -1705,7 +1710,7 @@
         card.style.transform = 'rotateY(' + rotateY.toFixed(1) + 'deg) translateZ(' + translateZ.toFixed(0) + 'px) scale(' + scale.toFixed(3) + ')';
         card.style.opacity = (0.35 + (1 - abs) * 0.65).toFixed(2);
         card.style.zIndex = String(Math.round((1 - abs) * 100));
-        card.classList.toggle('is-center', abs < 0.15);
+        card.classList.toggle('is-center', abs < 0.18);
       });
 
       var scrollMax = track.scrollWidth - viewport.clientWidth;
@@ -1715,7 +1720,10 @@
     }
 
     viewport.addEventListener('scroll', updateCoverflow, { passive: true });
-    window.addEventListener('resize', updateCoverflow);
+    window.addEventListener('resize', function () {
+      scrollToIndex(getCenterIndex(), false);
+      updateCoverflow();
+    });
 
     viewport.addEventListener('pointerdown', function (e) {
       drag.active = true;
@@ -1755,11 +1763,27 @@
       updateCoverflow();
     }, { passive: false });
 
-    prevBtn.addEventListener('click', function () {
+    prevBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
       scrollToIndex(getCenterIndex() - 1, true);
     });
-    nextBtn.addEventListener('click', function () {
+    nextBtn.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
       scrollToIndex(getCenterIndex() + 1, true);
+    });
+
+    /* 点侧卡先居中；点中间卡再看大图 */
+    cards.forEach(function (card, index) {
+      card.addEventListener('click', function (e) {
+        if (drag.moved) return;
+        if (!card.classList.contains('is-center')) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          scrollToIndex(index, true);
+        }
+      }, true);
     });
 
     requestAnimationFrame(function () {
