@@ -2103,26 +2103,33 @@
 
 /* ===== js/act-five.js ===== */
 (function () {
+  var POSTER_SIGN = '以数据看见民俗·赋能乡村振兴';
+  var POSTER_SOURCE = '数据来源：红河州文旅局 2023-2025 年度报告、云南省非遗保护中心';
+
   var POSTER_COPY = {
     food: {
-      title: '梯田农耕食俗',
-      line: '从七彩饭到梯田鱼，每一口都是哈尼生态观的味觉翻译。',
-      score: '关注维度：饮食 · 礼仪 · 产业链'
+      title: '梯田烟火·一席农味守乡土',
+      subtitle: '山地农耕·食材溯源·乡村农产内循环',
+      quote: '山林 45%、梯田 35%、市集 20%\n乡土物产完整赋能节庆经济',
+      summary: '顺应山水而食，以节庆盘活梯田农业资源'
     },
     costume: {
-      title: '哈尼服饰非遗',
-      line: '针线是无字史书，纹样从衣角走向文创，传统美学正在寻找当代表达。',
-      score: '关注维度：纹样 · 穿搭 · 文创转化'
+      title: '衣载山河·纹样藏史',
+      subtitle: '多支系服饰活态传承·民族文化多样性留存',
+      quote: '一针图腾记迁徙，一袭华服载千年',
+      summary: '服饰是可穿戴的非遗，纹样是哈尼的无字史书'
     },
     dance: {
-      title: '多民族共舞仪式',
-      line: '拉手围圈，十二步十二转——歌舞是祭祀、团圆与民族团结的伦理展演。',
-      score: '关注维度：乐作舞 · 仪式歌舞 · 社群凝聚'
+      title: '围圈同心·歌舞共生',
+      subtitle: '全民共舞仪式·多民族交融公共文化场景',
+      quote: '无边界共席共舞，构筑民族团结共同体',
+      summary: '以舞为礼、以聚为和，实现村寨共生相融'
     },
     tourism: {
-      title: '乡村文旅发展',
-      line: '三千桌宴席背后，是梯田产业、非遗政策与全域旅游交织的乡村振兴样本。',
-      score: '关注维度：规模扩容 · 增收数据 · 文旅闭环'
+      title: '古宴新生·非遗破局',
+      subtitle: '五维数据复盘·文旅优势与发展短板',
+      quote: '经济社会价值突出，文化文创仍待深耕',
+      summary: '传统民俗现代化转型，助力村寨增收振兴'
     }
   };
 
@@ -2132,38 +2139,51 @@
 
     var preview = root.querySelector('.memory-poster__preview');
     var titleEl = root.querySelector('.memory-poster__card-title');
-    var lineEl = root.querySelector('.memory-poster__card-line');
-    var scoreEl = root.querySelector('.memory-poster__card-score');
+    var subtitleEl = root.querySelector('.memory-poster__card-subtitle');
+    var quoteEl = root.querySelector('.memory-poster__card-quote');
+    var summaryEl = root.querySelector('.memory-poster__card-summary');
+    var signEl = root.querySelector('.memory-poster__card-sign');
+    var sourceEl = root.querySelector('.memory-poster__card-source');
     var selected = 'food';
 
-    function render(key) {
-      var data = POSTER_COPY[key];
-      if (!data) return;
+    function selectOption(key) {
+      if (!POSTER_COPY[key]) return;
       selected = key;
-      titleEl.textContent = data.title;
-      lineEl.textContent = data.line;
-      scoreEl.textContent = data.score;
-      preview.classList.add('is-generated');
       root.querySelectorAll('.memory-poster__option').forEach(function (btn) {
         btn.classList.toggle('is-active', btn.getAttribute('data-key') === key);
       });
     }
 
+    function generate(key) {
+      var data = POSTER_COPY[key];
+      if (!data || !preview) return;
+      selected = key;
+      titleEl.textContent = data.title;
+      subtitleEl.textContent = data.subtitle;
+      quoteEl.textContent = data.quote;
+      summaryEl.textContent = data.summary;
+      if (signEl) signEl.textContent = POSTER_SIGN;
+      if (sourceEl) sourceEl.textContent = POSTER_SOURCE;
+      preview.hidden = false;
+      preview.classList.add('is-generated');
+      root.querySelectorAll('.memory-poster__option').forEach(function (btn) {
+        btn.classList.toggle('is-active', btn.getAttribute('data-key') === key);
+      });
+      preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
     root.querySelectorAll('.memory-poster__option').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        render(btn.getAttribute('data-key'));
+        selectOption(btn.getAttribute('data-key'));
       });
     });
 
     var genBtn = root.querySelector('.memory-poster__generate');
     if (genBtn) {
       genBtn.addEventListener('click', function () {
-        render(selected);
-        preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        generate(selected);
       });
     }
-
-    render('food');
   }
 
   function init() {

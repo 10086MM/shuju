@@ -784,9 +784,8 @@ body .media-placeholder__label,
 body .media-placeholder__hint,
 body .radar-insights__conclusion,
 body .memory-poster__intro,
-body .memory-poster__card-line,
-body .memory-poster__card-score,
-body .memory-poster__footer,
+body .memory-poster__card-quote,
+body .memory-poster__card-summary,
 body .article-quote,
 body .chart-title,
 body .chart-caption-inner,
@@ -882,6 +881,15 @@ body footer {
 
 body .footer-ethnic {
   color: rgba(212, 168, 67, 0.75);
+}
+
+body .memory-poster__card-subtitle,
+body .memory-poster__card-source {
+  color: var(--text-body-muted);
+}
+
+body .memory-poster__card-sign {
+  color: var(--accent-gold);
 }
 
 /* ── 固定背景装饰层 ── */
@@ -3495,10 +3503,10 @@ body.pattern-modal-open {
 
 .memory-poster__preview {
   margin-top: 28px;
-  padding: 32px 0;
+  padding: clamp(28px, 4vw, 40px) clamp(16px, 3vw, 28px);
   background: transparent;
   border: none;
-  opacity: 0.4;
+  opacity: 0;
   transform: scale(0.98);
   transition: opacity 0.35s, transform 0.35s;
 }
@@ -3510,28 +3518,52 @@ body.pattern-modal-open {
 
 .memory-poster__card-title {
   font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
-  font-size: clamp(2rem, 5vw, 2.75rem);
+  font-size: clamp(1.85rem, 4.5vw, 2.55rem);
   color: var(--highlight-yellow);
-  margin-bottom: 16px;
-}
-
-.memory-poster__card-line {
-  font-size: clamp(1.15rem, 2.4vw, 1.35rem);
-  color: rgba(240, 235, 225, 0.88);
-  line-height: 1.8;
-  margin-bottom: 14px;
-}
-
-.memory-poster__card-score {
-  font-size: 1rem;
-  color: rgba(212, 168, 75, 0.85);
+  margin: 0 0 10px;
   letter-spacing: 0.06em;
 }
 
-.memory-poster__footer {
-  margin-top: 12px;
-  font-size: 0.9rem;
-  color: rgba(240, 235, 225, 0.45);
+.memory-poster__card-subtitle {
+  margin: 0 0 28px;
+  font-size: clamp(0.92rem, 1.8vw, 1.05rem);
+  color: var(--text-body-muted, rgba(61, 43, 31, 0.45));
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+}
+
+.memory-poster__card-quote {
+  margin: 0 auto 28px;
+  max-width: 28em;
+  font-family: 'Noto Serif SC', 'Songti SC', serif;
+  font-size: clamp(1.35rem, 3.2vw, 1.85rem);
+  font-weight: 700;
+  color: var(--text-body, rgba(61, 43, 31, 0.88));
+  line-height: 1.65;
+  letter-spacing: 0.04em;
+  white-space: pre-line;
+}
+
+.memory-poster__card-summary {
+  margin: 0 0 18px;
+  font-size: clamp(1.02rem, 2vw, 1.18rem);
+  color: var(--text-body-soft, rgba(61, 43, 31, 0.62));
+  line-height: 1.75;
+}
+
+.memory-poster__card-sign {
+  margin: 0 0 14px;
+  font-size: clamp(0.95rem, 1.7vw, 1.05rem);
+  color: var(--accent-gold);
+  letter-spacing: 0.14em;
+}
+
+.memory-poster__card-source {
+  margin: 0;
+  font-size: 0.68rem;
+  color: var(--text-body-muted, rgba(61, 43, 31, 0.4));
+  letter-spacing: 0.02em;
+  line-height: 1.5;
 }
 
 
