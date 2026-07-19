@@ -433,7 +433,7 @@ body::after {
   align-items: center;
   justify-content: flex-end;
   width: 100%;
-  margin-top: clamp(40px, 7vh, 88px);
+  margin-top: clamp(16px, 3vh, 32px);
   margin-bottom: 0;
   padding: 0;
   box-sizing: border-box;
@@ -443,7 +443,7 @@ body::after {
 
 .endpage--act3-close {
   margin-bottom: 0;
-  padding-bottom: clamp(16px, 3vh, 36px);
+  padding-bottom: clamp(8px, 1.5vh, 20px);
   overflow: visible;
 }
 
@@ -451,22 +451,22 @@ body::after {
   margin-bottom: 0;
   display: block;
   width: 100%;
-  /* 给 V 形高低差与头顶留余量 */
-  padding-top: clamp(56px, 10vh, 120px);
-  min-height: clamp(320px, 56vh, 520px);
+  /* 收紧空档，仅留 V 形与头顶余量 */
+  padding-top: clamp(20px, 3vh, 40px);
+  min-height: clamp(200px, 32vh, 300px);
   box-sizing: border-box;
   overflow: visible;
 }
 
 .endpage--act3-close .footer-ethnic {
-  margin: 0 0 clamp(8px, 1.5vh, 18px);
+  margin: 0 0 clamp(4px, 1vh, 10px);
   padding: 0 clamp(16px, 3vw, 32px);
   text-align: center;
   color: #c4a574;
   font-family: 'Ma Shan Zheng', cursive;
   font-size: clamp(1.05rem, 2vw, 1.35rem);
   letter-spacing: 0.28em;
-  transform: translateY(-130px);
+  transform: translateY(-18px);
   position: relative;
   z-index: 4;
 }
@@ -497,7 +497,7 @@ body::after {
   right: auto;
   bottom: auto;
   width: 100%;
-  height: clamp(280px, 52vh, 480px);
+  height: clamp(200px, 34vh, 300px);
   display: flex;
   align-items: flex-end;
   justify-content: space-evenly;
@@ -506,7 +506,7 @@ body::after {
   pointer-events: none;
   overflow: visible;
   transition: transform 2.8s cubic-bezier(0.22, 0.7, 0.28, 1);
-  transform: translateY(12%);
+  transform: translateY(8%);
 }
 
 /* 滚入后轻微上移，但仍留在预留区域内 */
@@ -604,12 +604,12 @@ body::after {
 
 @media (max-width: 720px) {
   .endpage--act3-close .endpage__scene {
-    min-height: clamp(260px, 48vh, 380px);
-    padding-top: clamp(40px, 8vh, 80px);
+    min-height: clamp(180px, 30vh, 260px);
+    padding-top: clamp(16px, 3vh, 32px);
   }
 
   .endpage__figures {
-    height: clamp(220px, 44vh, 320px);
+    height: clamp(170px, 30vh, 240px);
     gap: clamp(2px, 1vw, 8px);
   }
 
@@ -3432,8 +3432,8 @@ body.pattern-modal-open {
 }
 
 .memory-poster {
-  margin: 48px 0 24px;
-  padding: clamp(28px, 5vw, 40px) 0;
+  margin: 28px 0 8px;
+  padding: clamp(16px, 3vw, 24px) 0 8px;
   background: transparent;
   text-align: center;
 }
@@ -3488,9 +3488,9 @@ body.pattern-modal-open {
 }
 
 .memory-poster__brief {
-  margin: 8px auto 24px;
+  margin: 4px auto 14px;
   max-width: 36em;
-  padding: 8px 0 4px;
+  padding: 4px 0 0;
 }
 
 .memory-poster__brief-title {
@@ -3536,8 +3536,8 @@ body.pattern-modal-open {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-  margin-top: 32px;
+  gap: 14px;
+  margin-top: 18px;
   opacity: 0;
   transform: translateY(18px) scale(0.97);
   transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.22, 0.7, 0.28, 1);
