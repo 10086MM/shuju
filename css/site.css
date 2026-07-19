@@ -784,6 +784,7 @@ body .media-placeholder__label,
 body .media-placeholder__hint,
 body .radar-insights__conclusion,
 body .memory-poster__intro,
+body .memory-poster__brief-line,
 body .memory-poster__card-quote,
 body .memory-poster__card-summary,
 body .article-quote,
@@ -884,11 +885,13 @@ body .footer-ethnic {
 }
 
 body .memory-poster__card-subtitle,
-body .memory-poster__card-source {
+body .memory-poster__card-source,
+body .memory-poster__brief-footer {
   color: var(--text-body-muted);
 }
 
-body .memory-poster__card-sign {
+body .memory-poster__card-sign,
+body .memory-poster__brief-score {
   color: var(--accent-gold);
 }
 
@@ -3487,6 +3490,39 @@ body.pattern-modal-open {
   border: none;
   color: var(--highlight-yellow);
   text-decoration-color: var(--accent-gold);
+}
+
+.memory-poster__brief {
+  margin: 8px auto 24px;
+  max-width: 36em;
+  padding: 8px 0 4px;
+}
+
+.memory-poster__brief-title {
+  font-family: 'Ma Shan Zheng', 'Noto Serif SC', serif;
+  font-size: clamp(1.65rem, 3.8vw, 2.2rem);
+  color: var(--highlight-yellow);
+  margin: 0 0 12px;
+}
+
+.memory-poster__brief-line {
+  margin: 0 0 10px;
+  font-size: clamp(1.05rem, 2.1vw, 1.2rem);
+  color: var(--text-body, rgba(61, 43, 31, 0.88));
+  line-height: 1.75;
+}
+
+.memory-poster__brief-score {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: var(--accent-gold);
+  letter-spacing: 0.06em;
+}
+
+.memory-poster__brief-footer {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--text-body-muted, rgba(61, 43, 31, 0.45));
 }
 
 .memory-poster__generate {

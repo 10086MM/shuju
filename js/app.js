@@ -2103,9 +2103,35 @@
 
 /* ===== js/act-five.js ===== */
 (function () {
+  var BRIEF_FOOTER = '哈尼长街宴 · 数据新闻观察纪念卡';
   var POSTER_SIGN = '以数据看见民俗·赋能乡村振兴';
   var POSTER_SOURCE = '数据来源：红河州文旅局 2023-2025 年度报告、云南省非遗保护中心';
 
+  /* 原来的短预览：只随维度点选更新 */
+  var BRIEF_COPY = {
+    food: {
+      title: '梯田农耕食俗',
+      line: '从七彩饭到梯田鱼，每一口都是哈尼生态观的味觉翻译。',
+      score: '关注维度：饮食 · 礼仪 · 产业链'
+    },
+    costume: {
+      title: '哈尼服饰非遗',
+      line: '针线是无字史书，纹样从衣角走向文创，传统美学正在寻找当代表达。',
+      score: '关注维度：纹样 · 穿搭 · 文创转化'
+    },
+    dance: {
+      title: '多民族共舞仪式',
+      line: '拉手围圈，十二步十二转——歌舞是祭祀、团圆与民族团结的伦理展演。',
+      score: '关注维度：乐作舞 · 仪式歌舞 · 社群凝聚'
+    },
+    tourism: {
+      title: '乡村文旅发展',
+      line: '三千桌宴席背后，是梯田产业、非遗政策与全域旅游交织的乡村振兴样本。',
+      score: '关注维度：规模扩容 · 增收数据 · 文旅闭环'
+    }
+  };
+
+  /* 四版海报纪念卡：只在点「生成纪念卡」时写入 */
   var POSTER_COPY = {
     food: {
       title: '梯田烟火·一席农味守乡土',
@@ -2137,6 +2163,11 @@
     var root = document.getElementById('memory-poster');
     if (!root) return;
 
+    var briefTitle = root.querySelector('.memory-poster__brief-title');
+    var briefLine = root.querySelector('.memory-poster__brief-line');
+    var briefScore = root.querySelector('.memory-poster__brief-score');
+    var briefFooter = root.querySelector('.memory-poster__brief-footer');
+
     var preview = root.querySelector('.memory-poster__preview');
     var titleEl = root.querySelector('.memory-poster__card-title');
     var subtitleEl = root.querySelector('.memory-poster__card-subtitle');
@@ -2144,20 +2175,31 @@
     var summaryEl = root.querySelector('.memory-poster__card-summary');
     var signEl = root.querySelector('.memory-poster__card-sign');
     var sourceEl = root.querySelector('.memory-poster__card-source');
+
     var selected = 'food';
 
+    function updateBrief(key) {
+      var data = BRIEF_COPY[key];
+      if (!data || !briefTitle) return;
+      briefTitle.textContent = data.title;
+      if (briefLine) briefLine.textContent = data.line;
+      if (briefScore) briefScore.textContent = data.score;
+      if (briefFooter) briefFooter.textContent = BRIEF_FOOTER;
+    }
+
     function selectOption(key) {
-      if (!POSTER_COPY[key]) return;
+      if (!BRIEF_COPY[key]) return;
       selected = key;
       root.querySelectorAll('.memory-poster__option').forEach(function (btn) {
         btn.classList.toggle('is-active', btn.getAttribute('data-key') === key);
       });
+      updateBrief(key);
+      /* 不改动已生成纪念卡，两套互不覆盖 */
     }
 
-    function generate(key) {
+    function generatePoster(key) {
       var data = POSTER_COPY[key];
       if (!data || !preview) return;
-      selected = key;
       titleEl.textContent = data.title;
       subtitleEl.textContent = data.subtitle;
       quoteEl.textContent = data.quote;
@@ -2166,9 +2208,6 @@
       if (sourceEl) sourceEl.textContent = POSTER_SOURCE;
       preview.hidden = false;
       preview.classList.add('is-generated');
-      root.querySelectorAll('.memory-poster__option').forEach(function (btn) {
-        btn.classList.toggle('is-active', btn.getAttribute('data-key') === key);
-      });
       preview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
@@ -2181,9 +2220,11 @@
     var genBtn = root.querySelector('.memory-poster__generate');
     if (genBtn) {
       genBtn.addEventListener('click', function () {
-        generate(selected);
+        generatePoster(selected);
       });
     }
+
+    updateBrief(selected);
   }
 
   function init() {
