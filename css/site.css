@@ -426,7 +426,7 @@ body::after {
   line-height: 1.8;
 }
 
-/* ===== 第三幕收束 · 五人线稿 + 花纹 ===== */
+/* ===== 第三幕收束 · 五人线稿 ===== */
 .endpage {
   display: flex;
   flex-direction: column;
@@ -438,17 +438,24 @@ body::after {
   padding: 0;
   box-sizing: border-box;
   min-height: 0;
+  overflow: visible;
 }
 
 .endpage--act3-close {
   margin-bottom: 0;
-  padding-bottom: 0;
+  padding-bottom: clamp(16px, 3vh, 36px);
+  overflow: visible;
 }
 
-.endpage--act3-close .endpage__scene,
-.endpage--act3-close .endpage__pattern-crop {
+.endpage--act3-close .endpage__scene {
   margin-bottom: 0;
   display: block;
+  width: 100%;
+  /* 给上行走的空间，避免头顶被裁 */
+  padding-top: clamp(48px, 8vh, 96px);
+  min-height: clamp(260px, 48vh, 400px);
+  box-sizing: border-box;
+  overflow: visible;
 }
 
 .endpage--act3-close .footer-ethnic {
@@ -459,7 +466,9 @@ body::after {
   font-family: 'Ma Shan Zheng', cursive;
   font-size: clamp(1.05rem, 2vw, 1.35rem);
   letter-spacing: 0.28em;
-  transform: translateY(-30px);
+  transform: translateY(-130px);
+  position: relative;
+  z-index: 4;
 }
 
 .endpage__main {
@@ -474,52 +483,35 @@ body::after {
   text-align: center;
 }
 
-/* 花纹底 + 小人走在花纹上沿；去掉底部约 1/3 */
 .endpage__scene {
   position: relative;
   width: 100%;
   margin-top: 0;
-  line-height: 0;
   overflow: visible;
   background: transparent;
 }
 
-.endpage__pattern-crop {
-  width: 100%;
-  overflow: hidden;
-  line-height: 0;
-  /* 原图 1100×791：先去下 1/3，再去 1/8 → 保留约 13/24 */
-  aspect-ratio: 1100 / 428;
-}
-
-.endpage__pattern {
-  display: block;
-  width: 100%;
-  height: auto;
-  opacity: 1;
-  user-select: none;
-  pointer-events: none;
-}
-
 .endpage__figures {
-  position: absolute;
-  left: 0;
-  right: 0;
-  /* 起点：脚底在花纹上沿；整体下移 115px（75+40） */
-  bottom: calc(48% - 115px);
-  height: clamp(160px, 38vh, 320px);
+  position: relative;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  width: 100%;
+  height: clamp(220px, 42vh, 380px);
   display: flex;
   align-items: flex-end;
   justify-content: space-evenly;
-  gap: clamp(2px, 0.8vw, 12px);
+  gap: clamp(4px, 1vw, 16px);
   z-index: 3;
   pointer-events: none;
-  transition: bottom 2.8s cubic-bezier(0.22, 0.7, 0.28, 1);
+  overflow: visible;
+  transition: transform 2.8s cubic-bezier(0.22, 0.7, 0.28, 1);
+  transform: translateY(12%);
 }
 
-/* 滚入第三幕底部后向上走入空白区 */
+/* 滚入后轻微上移，但仍留在预留区域内 */
 .endpage.is-figures-rise .endpage__figures {
-  bottom: calc(72% - 115px);
+  transform: translateY(0);
 }
 
 .endpage__figure-slot {
@@ -528,7 +520,8 @@ body::after {
   justify-content: center;
   height: 100%;
   flex: 1 1 0;
-  max-width: min(22%, 280px);
+  max-width: min(24%, 300px);
+  overflow: visible;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -544,8 +537,9 @@ body::after {
 .endpage__figure {
   display: block;
   width: 100%;
-  max-width: min(22vw, 260px);
+  max-width: min(24vw, 280px);
   height: 100%;
+  max-height: none;
   object-fit: contain;
   object-position: bottom center;
   background: transparent;
@@ -569,7 +563,7 @@ body::after {
 }
 
 .endpage__figure--hani {
-  max-width: min(25vw, 300px);
+  max-width: min(26vw, 320px);
 }
 
 .endpage__figure-slot:nth-child(1) .endpage__figure { animation-delay: 0s; }
@@ -603,28 +597,29 @@ body::after {
     animation: none;
   }
 
+  .endpage__figures,
   .endpage.is-figures-rise .endpage__figures {
-    bottom: calc(86% - 115px);
+    transform: translateY(0);
   }
 }
 
 @media (max-width: 720px) {
+  .endpage--act3-close .endpage__scene {
+    min-height: clamp(220px, 42vh, 320px);
+    padding-top: clamp(32px, 6vh, 64px);
+  }
+
   .endpage__figures {
-    bottom: calc(46% - 115px);
-    height: clamp(130px, 32vh, 220px);
+    height: clamp(180px, 36vh, 260px);
     gap: clamp(2px, 1vw, 8px);
   }
 
-  .endpage.is-figures-rise .endpage__figures {
-    bottom: calc(70% - 115px);
-  }
-
   .endpage__figure {
-    max-width: min(26vw, 150px);
+    max-width: min(28vw, 160px);
   }
 
   .endpage__figure--hani {
-    max-width: min(28vw, 170px);
+    max-width: min(30vw, 180px);
   }
 }
 
@@ -1535,9 +1530,17 @@ html.story-layered .story-panel::before {
     scrollbar-color: rgba(212, 168, 75, 0.4) transparent;
   }
 
-  /* 第三幕以花纹收束贴底，去掉底部宣纸空白条 */
+  /* 第三幕以收束贴底，保留溢出可见以免小人头顶被裁 */
   html.story-layered #panel-act3 .story-panel__scroll {
     padding-bottom: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  html.story-layered #panel-act3 .endpage,
+  html.story-layered #panel-act3 .endpage__scene,
+  html.story-layered #panel-act3 .endpage__figures {
+    overflow: visible;
   }
 
   html.story-layered .story-panel__scroll .page,
