@@ -4112,6 +4112,7 @@ body.souvenir-modal-open {
 .pattern-spotlight__glow {
   position: absolute;
   inset: -20%;
+  z-index: 0;
   background: radial-gradient(circle at 50% 40%, rgba(212, 168, 67, 0.35), transparent 55%);
   opacity: 0.6;
   pointer-events: none;
@@ -4130,18 +4131,32 @@ body.souvenir-modal-open {
 
 .pattern-spotlight__hero-img {
   position: absolute;
-  inset: 8% 10% 32%;
-  width: 80%;
-  height: 60%;
-  margin: auto;
+  left: 50%;
+  top: 38%;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  max-width: 78%;
+  max-height: 58%;
+  margin: 0;
+  transform: translate(-50%, -50%);
   object-fit: contain;
   filter: drop-shadow(0 16px 32px rgba(61, 43, 31, 0.2));
   transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  opacity: 1;
+}
+
+.pattern-spotlight__hero-img.media-pending:not(.is-fade) {
+  opacity: 0.2;
+}
+
+.pattern-spotlight__hero-img.media-loaded:not(.is-fade) {
+  opacity: 1;
 }
 
 .pattern-spotlight__hero-img.is-fade {
   opacity: 0;
-  transform: scale(0.92);
+  transform: translate(-50%, -50%) scale(0.92);
 }
 
 .pattern-spotlight__info {
@@ -4149,6 +4164,7 @@ body.souvenir-modal-open {
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 2;
   padding: clamp(16px, 3vw, 24px);
   background: linear-gradient(to top, rgba(245, 239, 230, 0.98) 70%, transparent);
 }
