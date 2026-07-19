@@ -3462,12 +3462,6 @@ body.pattern-modal-open {
   margin-bottom: 20px;
 }
 
-.memory-poster__stage {
-  position: relative;
-  z-index: 5;
-  overflow: visible;
-}
-
 .memory-poster__option {
   padding: 10px 18px;
   background: transparent;
@@ -3541,177 +3535,122 @@ body.pattern-modal-open {
   letter-spacing: 0.08em;
 }
 
-/* 左侧方框舞台：顶对齐选项、底对齐生成按钮；纪念卡缩小填入 */
+/* 生成按钮居中 */
 .memory-poster__craft {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 6;
 }
 
-.memory-poster__result {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: clamp(128px, 16vw, 168px);
-  transform: scale(0.96);
-  transform-origin: left bottom;
+/* 纪念卡弹框 */
+.souvenir-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
   display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: flex-end;
-  gap: 0;
-  margin: 0;
-  padding: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  box-sizing: border-box;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 0.7, 0.28, 1), visibility 0.45s;
-  z-index: 7;
+  transition: opacity 0.28s ease, visibility 0.28s;
 }
 
-.memory-poster__result.is-revealed {
+.souvenir-modal.is-open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: scale(1);
 }
 
-.memory-poster__result[hidden] {
+.souvenir-modal[hidden] {
   display: none !important;
 }
 
-.memory-poster__result.is-revealed:not([hidden]) {
+.souvenir-modal.is-open:not([hidden]) {
   display: flex;
 }
 
-.memory-poster__result .souvenir-card {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
-  max-height: 100%;
-  aspect-ratio: auto;
+.souvenir-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(42, 31, 22, 0.48);
+  backdrop-filter: blur(2px);
 }
 
-.memory-poster__result .memory-poster__download {
+.souvenir-modal__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 100%;
+  max-height: min(92vh, 920px);
+  overflow: auto;
+  transform: translateY(16px) scale(0.96);
+  transition: transform 0.32s cubic-bezier(0.22, 0.7, 0.28, 1);
+}
+
+.souvenir-modal.is-open .souvenir-modal__panel {
+  transform: translateY(0) scale(1);
+}
+
+.souvenir-modal__close {
   position: absolute;
-  left: 50%;
-  top: calc(100% + 8px);
-  transform: translateX(-50%);
-  white-space: nowrap;
-  font-size: 0.78rem;
-  padding: 6px 12px;
+  top: -6px;
+  right: -6px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(168, 120, 42, 0.45);
+  border-radius: 50%;
+  background: #f7f0e4;
+  color: #6b4a18;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(61, 43, 31, 0.12);
+}
+
+.souvenir-modal__close:hover {
+  background: #efe3cf;
+}
+
+body.souvenir-modal-open {
+  overflow: hidden;
+}
+
+.souvenir-modal .souvenir-card {
+  width: min(100%, 320px);
+  aspect-ratio: 3 / 4.25;
+  flex-shrink: 0;
+}
+
+.souvenir-modal .memory-poster__download {
+  position: static;
+  transform: none;
+  margin: 0;
 }
 
 .souvenir-card {
   position: relative;
-  width: min(100%, 250px);
+  width: min(100%, 320px);
   aspect-ratio: 3 / 4.25;
   isolation: isolate;
 }
 
-/* 缩小卡内字号，适配方框 */
-.memory-poster__result .souvenir-card__inner {
-  padding: 10px 8px 12px;
-}
-
-.memory-poster__result .souvenir-card__brand {
-  font-size: 0.58rem;
-  letter-spacing: 0.16em;
-}
-
-.memory-poster__result .souvenir-card__dim {
-  font-size: 0.52rem;
-  letter-spacing: 0.08em;
-}
-
-.memory-poster__result .souvenir-card__title {
-  font-size: clamp(0.78rem, 1.6vw, 0.95rem);
-  margin-bottom: 4px;
-}
-
-.memory-poster__result .souvenir-card__subtitle {
-  font-size: 0.48rem;
-  letter-spacing: 0.04em;
-}
-
-.memory-poster__result .souvenir-card__divider {
-  margin: 8px 0;
-}
-
-.memory-poster__result .souvenir-card__quote-lead {
-  font-size: 0.52rem;
-  margin-bottom: 4px;
-  white-space: nowrap;
-  letter-spacing: 0;
-}
-
-.memory-poster__result .souvenir-card__quote {
-  font-size: clamp(0.62rem, 1.3vw, 0.78rem);
-  line-height: 1.45;
-}
-
-.memory-poster__result .souvenir-card__summary {
-  font-size: 0.58rem;
-  line-height: 1.45;
-}
-
-.memory-poster__result .souvenir-card__sign {
-  font-size: 0.52rem;
-  letter-spacing: 0.06em;
-}
-
-.memory-poster__result .souvenir-card__source {
-  font-size: 0.4rem;
-  line-height: 1.35;
-}
-
-.memory-poster__result .souvenir-card__seal {
-  width: 28px;
-  height: 28px;
-  font-size: 0.52rem;
-  right: 8px;
-  bottom: 36px;
-}
-
-.memory-poster__result .souvenir-card__foot {
-  padding-top: 8px;
-}
-
-.memory-poster__result .souvenir-card__frame {
-  padding: 5px;
-}
-
-@media (max-width: 900px) {
-  .memory-poster__result {
-    left: 50%;
-    right: auto;
-    top: auto;
-    bottom: auto;
-    width: min(280px, 88vw);
-    height: auto;
-    margin: 18px auto 0;
-    position: relative;
-    transform: translateX(-50%) scale(0.97);
+@media (max-width: 720px) {
+  .souvenir-modal .souvenir-card,
+  .souvenir-card {
+    width: min(100%, 280px);
   }
 
-  .memory-poster__result.is-revealed {
-    transform: translateX(-50%) scale(1);
-  }
-
-  .memory-poster__result .souvenir-card {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 3 / 4.25;
-  }
-
-  .memory-poster__result .memory-poster__download {
-    position: static;
-    transform: none;
-    margin-top: 12px;
+  .souvenir-modal__close {
+    top: 0;
+    right: 0;
   }
 }
 

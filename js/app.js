@@ -2378,7 +2378,7 @@
     var briefScore = root.querySelector('.memory-poster__brief-score');
     var briefFooter = root.querySelector('.memory-poster__brief-footer');
 
-    var result = root.querySelector('.memory-poster__result');
+    var modal = document.getElementById('souvenir-modal');
     var card = root.querySelector('#souvenir-card');
     var selected = 'food';
     var lastGenerated = null;
@@ -2401,9 +2401,28 @@
       updateBrief(key);
     }
 
+    function closeModal() {
+      if (!modal) return;
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      window.setTimeout(function () {
+        if (!modal.classList.contains('is-open')) modal.hidden = true;
+      }, 280);
+      document.body.classList.remove('souvenir-modal-open');
+    }
+
+    function openModal() {
+      if (!modal) return;
+      modal.hidden = false;
+      modal.setAttribute('aria-hidden', 'false');
+      void modal.offsetWidth;
+      modal.classList.add('is-open');
+      document.body.classList.add('souvenir-modal-open');
+    }
+
     function generatePoster(key) {
       var data = POSTER_COPY[key];
-      if (!data || !result || !card) return;
+      if (!data || !card) return;
       lastGenerated = { key: key, data: data };
       setField(card, 'dim', data.dim);
       setField(card, 'title', data.title);
@@ -2413,10 +2432,7 @@
       setField(card, 'summary', data.summary);
       setField(card, 'sign', POSTER_SIGN);
       setField(card, 'source', POSTER_SOURCE);
-      result.hidden = false;
-      result.classList.remove('is-revealed');
-      void result.offsetWidth;
-      result.classList.add('is-revealed');
+      openModal();
     }
 
     root.querySelectorAll('.memory-poster__option').forEach(function (btn) {
@@ -2431,6 +2447,18 @@
         generatePoster(selected);
       });
     }
+
+    if (modal) {
+      modal.querySelectorAll('[data-modal-close]').forEach(function (el) {
+        el.addEventListener('click', closeModal);
+      });
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && modal && modal.classList.contains('is-open')) {
+        closeModal();
+      }
+    });
 
     var dlBtn = root.querySelector('.memory-poster__download');
     if (dlBtn) {

@@ -700,23 +700,26 @@
     <section class="memory-poster" id="memory-poster" aria-label="个性化记忆海报">
       <h3 class="memory-poster__heading">个性化记忆海报</h3>
       <p class="memory-poster__intro">结合本次数据观察，选择你最关注的长街宴文化维度，生成专属文化观察纪念卡</p>
-      <div class="memory-poster__stage">
-        <div class="memory-poster__options">
-          <button type="button" class="memory-poster__option is-active" data-key="food">梯田农耕食俗</button>
-          <button type="button" class="memory-poster__option" data-key="costume">哈尼服饰非遗</button>
-          <button type="button" class="memory-poster__option" data-key="dance">多民族共舞仪式</button>
-          <button type="button" class="memory-poster__option" data-key="tourism">乡村文旅发展</button>
-        </div>
-        <div class="memory-poster__brief" aria-live="polite">
-          <h4 class="memory-poster__brief-title">梯田农耕食俗</h4>
-          <p class="memory-poster__brief-line">从七彩饭到梯田鱼，每一口都是哈尼生态观的味觉翻译。</p>
-          <p class="memory-poster__brief-score">关注维度：饮食 · 礼仪 · 产业链</p>
-          <p class="memory-poster__brief-footer">哈尼长街宴 · 数据新闻观察纪念卡</p>
-        </div>
-        <div class="memory-poster__craft">
-          <button type="button" class="memory-poster__generate">生成纪念卡</button>
-        </div>
-        <div class="memory-poster__result" hidden>
+      <div class="memory-poster__options">
+        <button type="button" class="memory-poster__option is-active" data-key="food">梯田农耕食俗</button>
+        <button type="button" class="memory-poster__option" data-key="costume">哈尼服饰非遗</button>
+        <button type="button" class="memory-poster__option" data-key="dance">多民族共舞仪式</button>
+        <button type="button" class="memory-poster__option" data-key="tourism">乡村文旅发展</button>
+      </div>
+      <div class="memory-poster__brief" aria-live="polite">
+        <h4 class="memory-poster__brief-title">梯田农耕食俗</h4>
+        <p class="memory-poster__brief-line">从七彩饭到梯田鱼，每一口都是哈尼生态观的味觉翻译。</p>
+        <p class="memory-poster__brief-score">关注维度：饮食 · 礼仪 · 产业链</p>
+        <p class="memory-poster__brief-footer">哈尼长街宴 · 数据新闻观察纪念卡</p>
+      </div>
+      <div class="memory-poster__craft">
+        <button type="button" class="memory-poster__generate">生成纪念卡</button>
+      </div>
+
+      <div class="souvenir-modal" id="souvenir-modal" hidden aria-hidden="true">
+        <div class="souvenir-modal__backdrop" data-modal-close></div>
+        <div class="souvenir-modal__panel" role="dialog" aria-modal="true" aria-labelledby="souvenir-card-title">
+          <button type="button" class="souvenir-modal__close" data-modal-close aria-label="关闭">×</button>
           <article class="souvenir-card" id="souvenir-card" aria-label="文化观察纪念卡">
             <div class="souvenir-card__shine" aria-hidden="true"></div>
             <div class="souvenir-card__frame">
@@ -725,7 +728,7 @@
                   <p class="souvenir-card__brand">哈尼长街宴</p>
                   <p class="souvenir-card__dim" data-field="dim"></p>
                 </header>
-                <h4 class="souvenir-card__title" data-field="title"></h4>
+                <h4 class="souvenir-card__title" id="souvenir-card-title" data-field="title"></h4>
                 <p class="souvenir-card__subtitle" data-field="subtitle"></p>
                 <div class="souvenir-card__divider" aria-hidden="true">
                   <span></span><i></i><span></span>
