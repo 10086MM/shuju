@@ -2417,7 +2417,6 @@
       result.classList.remove('is-revealed');
       void result.offsetWidth;
       result.classList.add('is-revealed');
-      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
 
     root.querySelectorAll('.memory-poster__option').forEach(function (btn) {

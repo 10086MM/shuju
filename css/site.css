@@ -468,7 +468,7 @@ body::after {
   letter-spacing: 0.28em;
   transform: translateY(-130px);
   position: relative;
-  z-index: 4;
+  z-index: 8;
 }
 
 .endpage__main {
@@ -3535,7 +3535,7 @@ body.pattern-modal-open {
   letter-spacing: 0.08em;
 }
 
-/* 生成区高度只等于按钮；纪念卡浮到中间空白，不挤动标语/小人 */
+/* 生成按钮仍居中；纪念卡浮在左侧、与简介同高，不挤中间文案 */
 .memory-poster__craft {
   position: relative;
   display: flex;
@@ -3546,16 +3546,17 @@ body.pattern-modal-open {
 
 .memory-poster__result {
   position: absolute;
-  left: 50%;
-  top: calc(100% + 18px);
-  transform: translateX(-50%) translateY(12px) scale(0.97);
+  left: max(-12vw, -220px);
+  top: clamp(7.5rem, 18%, 11rem);
+  right: auto;
+  transform: translateY(10px) scale(0.97);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   margin: 0;
   width: max-content;
-  max-width: min(100%, 360px);
+  max-width: min(260px, 34vw);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -3567,7 +3568,7 @@ body.pattern-modal-open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateX(-50%) translateY(0) scale(1);
+  transform: translateY(0) scale(1);
 }
 
 .memory-poster__result[hidden] {
@@ -3580,9 +3581,29 @@ body.pattern-modal-open {
 
 .souvenir-card {
   position: relative;
-  width: min(100%, 300px);
+  width: min(100%, 250px);
   aspect-ratio: 3 / 4.25;
   isolation: isolate;
+}
+
+@media (max-width: 900px) {
+  .memory-poster__result {
+    left: 50%;
+    top: auto;
+    bottom: auto;
+    margin-top: 18px;
+    position: relative;
+    max-width: min(280px, 88vw);
+    transform: translateX(-50%) translateY(8px) scale(0.97);
+  }
+
+  .memory-poster__result.is-revealed {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  .souvenir-card {
+    width: min(100%, 280px);
+  }
 }
 
 .souvenir-card__shine {
