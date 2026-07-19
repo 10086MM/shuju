@@ -1307,9 +1307,9 @@
     { name: '编织袋', meaning: '可重复使用的环保载体，纹样随行走传播。' }
   ];
 
-  var TRADITIONAL_FOLDERS = ['image/传统纹样', 'image/传统纹样（重叠式的）'];
-  var INNOVATION_FOLDERS = ['image/创新纹样', 'image/创新纹样（重叠式的）'];
-  var CULTURAL_FOLDERS = ['image/文创产品', 'image/文创产品（重叠式的）'];
+  var TRADITIONAL_FOLDERS = ['image/传统纹样'];
+  var INNOVATION_FOLDERS = ['image/创新纹样'];
+  var CULTURAL_FOLDERS = ['image/文创产品'];
 
   var tooltipEl;
   var modalEl;
@@ -1948,12 +1948,14 @@
         img.alt = group.label;
         img.loading = 'lazy';
         img.draggable = false;
+        var src = encodePath(file);
+        img.dataset.mediaSrc = src;
         if (window.MediaLoadQueue) {
-          window.MediaLoadQueue.loadSrc(img, encodePath(file), i === 0 && fi === 0
+          window.MediaLoadQueue.loadSrc(img, src, i === 0 && fi === 0
             ? { immediate: true, priority: true }
-            : null);
+            : (Math.abs(i) <= 1 ? { priority: true } : null));
         } else {
-          img.src = encodePath(file);
+          img.src = src;
         }
         wrap.appendChild(img);
       });
@@ -2009,6 +2011,25 @@
       li.classList.toggle('is-active', lii === this.index);
     }, this);
     this.layout();
+    this.preloadAround(this.index);
+  };
+
+  AgeOutfitCarousel.prototype.preloadAround = function (center) {
+    var self = this;
+    [center, center - 1, center + 1].forEach(function (raw) {
+      var i = (raw + AGE_GROUPS.length) % AGE_GROUPS.length;
+      var card = self.cards[i];
+      if (!card) return;
+      card.querySelectorAll('img').forEach(function (img) {
+        if (img.naturalWidth > 0) return;
+        var src = img.dataset.mediaSrc;
+        if (src && window.MediaLoadQueue && window.MediaLoadQueue.urgent) {
+          window.MediaLoadQueue.urgent(img, src);
+        } else if (src) {
+          img.src = src;
+        }
+      });
+    });
   };
 
   AgeOutfitCarousel.prototype.bindEvents = function () {

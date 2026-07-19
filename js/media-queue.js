@@ -14,7 +14,7 @@
     '.timeline'
   ].join(', ');
 
-  var MAX_CONCURRENT = 4; /* 同屏模块内并行，避免一张一张拖慢 */
+  var MAX_CONCURRENT = 8; /* 提高同屏并行，减少排队等待 */
   var GAP_MS = 0;
   var states = [];
   var moduleQueue = [];
