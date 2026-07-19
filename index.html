@@ -219,7 +219,9 @@
 
   <main class="story-track" id="story-track" tabindex="0">
 <section class="story-panel story-panel--cover" id="panel-cover" aria-label="作品封面">
-      <div class="cover-screen">
+      <div class="cover-screen" data-decor-skip="true">
+        <img class="cover-screen__ornament cover-screen__ornament--left" src="image/视觉素材/花纹素材/3-cover.png?v=5" alt="" aria-hidden="true">
+        <img class="cover-screen__ornament cover-screen__ornament--right" src="image/视觉素材/花纹素材/3(1)-cover.png?v=5" alt="" aria-hidden="true">
         <header class="hero-banner cover-screen__head">
           <h1 class="cover-screen__title">逛长街大席</h1>
           <p class="cover-screen__hook">一站式读懂哈尼衣食乐！</p>
@@ -367,12 +369,13 @@
 
     <section class="story-panel story-panel--chapter" id="panel-act2" aria-label="第二幕">
       <div class="story-panel__scroll">
-  <article class="page article-block act-three" aria-label="第二幕 舌尖长街">
+  <article class="page article-block act-three" aria-label="第二幕 舌尖长街" data-decor-skip="true">
     <header class="act-one-header">
       <span class="act-number">第二幕</span>
       <h2 class="act-one-title">舌尖长街</h2>
     </header>
 
+    <section class="food-pattern-section food-pattern-section--1">
     <h3 class="article-h3">第一节 · 入席·飨食录</h3>
     <p class="article-p">长街宴不只满足口腹之欲，更是社会关系的一场「展演」。理解宴席礼仪，需同时看两条轴：<strong>空间轴</strong>划定座次（龙头主桌 → 宾客席 → 晚辈席）；<strong>时间轴</strong>串联流程（迎宾 → 分福肉 → 敬酒 → 布菜 → 散席）。其中「分福肉」为核心仪式，象征福气在代际间的传递。</p>
 
@@ -424,7 +427,9 @@
       <figcaption class="figure-caption">图 2：尊老爱幼 · 长幼有序（环形礼仪图）</figcaption>
       <p class="article-note">中心圈层为龙头/长辈 → 成年人/中青年 → 儿童/晚辈；外环顺时针流转迎宾、分福肉、敬酒、布菜、散席五礼。</p>
     </figure>
+    </section>
 
+    <section class="food-pattern-section food-pattern-section--2">
     <h3 class="article-h3">十二道风味，道道有来头</h3>
     <p class="article-p">长街宴有相对固定的十二道招牌菜（七彩糯米饭、梯田鱼、牛肉干巴等），每一道都对应一个农耕场景或劳作周期——如梯田鱼对应夏秋稻鱼共作，把「吃什么」与「何时种、何时收」绑在一起。</p>
 
@@ -432,14 +437,18 @@
       <iframe class="embed-frame" src="embed-food.html?view=twelve" title="长街宴十二道美食及对应农耕场景与劳作周期" loading="lazy" scrolling="no"></iframe>
     </div>
     <p class="article-note">参见郑宇《民族节庆文化研究》、张禀磊《哈尼长街宴的现代再造》等。</p>
+    </section>
 
+    <section class="food-pattern-section food-pattern-section--1">
     <h3 class="article-h3">食材从哪来？森林、梯田、市集的生态链</h3>
     <p class="article-p">长街宴食材来自三重生态：<strong>森林</strong>提供「自然馈赠」——野菌、蜂蛹等；<strong>梯田</strong>提供「耕作根基」——红米、田鱼；<strong>市集</strong>提供「必要物资」——盐、酒曲。林—梯—市构成完整的乡土供给链。</p>
 
     <div class="embed-frame-wrap">
       <iframe class="embed-frame" src="长街宴食材来源构成.html" title="长街宴食材来源构成" loading="lazy" scrolling="no"></iframe>
     </div>
+    </section>
 
+    <section class="food-pattern-section food-pattern-section--2">
     <h3 class="article-h3">哪些上桌，哪些不上？背后有讲究</h3>
     <p class="article-p">总结「信仰逻辑」：家畜类（鸡、鸭、螺、黄鳝）因「不洁」或寓意歧义不上席；山林野味（竹鸡、山鸡、蜂蛹、野菌）因「野气」「珍贵」而成为祭献与宴席主角。</p>
 
@@ -447,7 +456,9 @@
       <iframe class="embed-frame" src="embed-food.html?view=taboo" title="禁忌类与可上席类" loading="lazy" scrolling="no"></iframe>
     </div>
     <p class="article-note">图注：本图依据郑宇《哈尼族长街宴饮食的人类学阐释》整理。</p>
+    </section>
 
+    <section class="food-pattern-section food-pattern-section--1">
     <h3 class="article-h3">美食如何变成「钱」？真实数据看经济带动</h3>
     <p class="article-p">美食消费反哺乡村振兴。「稻鱼鸭」模式下梯田亩产值由约 2000 元升至 8000 元以上。2025 年绿春长街宴接待游客 10.35 万人次，旅游收入 1.12 亿元，带动 10953 户农户增收。</p>
 
@@ -461,6 +472,7 @@
       <li><strong>旅游与消费拉动</strong>——2025 年绿春长街宴接待游客 10.35 万人次，旅游总消费 1.12 亿元，特色农产品销售 427.35 万元。<br><span class="source-ref">来源：2025 绿春哈尼十月年长街宴火爆出圈 · 文旅头条</span></li>
       <li><strong>产业带动与增收</strong>——红河州推广「稻鱼鸭」模式，累计带动 10953 户建档立卡贫困农户，户均年增收 2000 元以上。<br><span class="source-ref">来源：红河州人民政府官网<a href="https://www.hh.gov.cn/info/1043/167051.htm" target="_blank" rel="noopener">hh.gov.cn/info/1043/167051.htm</a></span></li>
     </ol>
+    </section>
 
     <p class="article-quote-lg">「吃完了？别走，宴席散了，歌舞才刚开始。」</p>
 
@@ -716,9 +728,34 @@
 
 <section class="story-panel story-panel--chapter story-panel--end" id="panel-end" aria-label="尾声">
       <div class="story-panel__scroll">
-  <footer>
-    <p class="footer-ethnic">千年梯田 · 一席长街 · 万家同乐</p>
-  </footer>
+        <div class="endpage" data-decor-skip="true">
+          <div class="endpage__main">
+            <footer class="endpage__footer">
+              <p class="footer-ethnic">千年梯田 · 一席长街 · 万家同乐</p>
+            </footer>
+          </div>
+          <div class="endpage__scene" aria-hidden="true">
+            <img class="endpage__pattern" src="image/视觉素材/花纹素材/9-cut.png?v=2" alt="">
+            <div class="endpage__figures">
+              <!-- V 字：两侧高、中间低 -->
+              <span class="endpage__figure-slot" style="--drift: 28px; --v-y: -12%">
+                <img class="endpage__figure" src="image/视觉素材/单人线稿/透明深色/汉族.png?v=8" alt="">
+              </span>
+              <span class="endpage__figure-slot" style="--drift: 14px; --v-y: -5%">
+                <img class="endpage__figure" src="image/视觉素材/单人线稿/透明深色/苗族.png?v=8" alt="">
+              </span>
+              <span class="endpage__figure-slot" style="--drift: 0px; --v-y: 6%">
+                <img class="endpage__figure endpage__figure--hani" src="image/视觉素材/单人线稿/透明深色/哈尼族.png?v=8" alt="">
+              </span>
+              <span class="endpage__figure-slot" style="--drift: -14px; --v-y: -5%">
+                <img class="endpage__figure" src="image/视觉素材/单人线稿/透明深色/彝族.png?v=8" alt="">
+              </span>
+              <span class="endpage__figure-slot" style="--drift: -28px; --v-y: -12%">
+                <img class="endpage__figure" src="image/视觉素材/单人线稿/透明深色/壮族.png?v=8" alt="">
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 

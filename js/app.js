@@ -1097,6 +1097,122 @@
     });
   }
 
+  /* 封面花纹：显示后等待 3 秒，再沿对称轨迹滑向左右边缘 */
+  (function initCoverOrnaments() {
+    var cover = document.querySelector('.cover-screen');
+    var left = cover && cover.querySelector('.cover-screen__ornament--left');
+    var right = cover && cover.querySelector('.cover-screen__ornament--right');
+    var title = cover && cover.querySelector('.cover-screen__title');
+    var hook = cover && cover.querySelector('.cover-screen__hook');
+    if (!cover || !left || !right || !title || !hook) return;
+
+    var started = false;
+    var scheduled = false;
+    var resizeTimer = 0;
+    var MOVE_DELAY_MS = 3000;
+
+    function placeSymmetric() {
+      var coverRect = cover.getBoundingClientRect();
+      var titleRect = title.getBoundingClientRect();
+      var hookRect = hook.getBoundingClientRect();
+      var midX = coverRect.width / 2;
+      var gap = Math.max(10, Math.round(coverRect.width * 0.014));
+      var edge = Math.max(10, Math.round(coverRect.width * 0.022));
+
+      /* 以标题+副题文字块为基准，左右起点距中心等距 */
+      var leftClear = midX - (titleRect.left - coverRect.left) + gap;
+      var rightClear = (hookRect.right - coverRect.left) - midX + gap;
+      var startFromCenter = Math.max(leftClear, rightClear, coverRect.width * 0.18);
+
+      /* 同一高度：取「逛长街大席」与「衣食乐！」的中线 */
+      var startTop = Math.round(
+        ((titleRect.top + titleRect.height / 2) + (hookRect.top + hookRect.height / 2)) / 2 - coverRect.top
+      );
+      var endTop = Math.round(coverRect.height / 2);
+      var startInset = Math.round(midX - startFromCenter);
+
+      cover.style.setProperty('--cover-ornament-left-start', startInset + 'px');
+      cover.style.setProperty('--cover-ornament-right-start', startInset + 'px');
+      cover.style.setProperty('--cover-ornament-start-top', startTop + 'px');
+      cover.style.setProperty('--cover-ornament-end-top', endTop + 'px');
+      cover.style.setProperty('--cover-ornament-left-end', edge + 'px');
+      cover.style.setProperty('--cover-ornament-right-end', edge + 'px');
+    }
+
+    function showAtStart() {
+      placeSymmetric();
+      left.classList.add('is-ready');
+      right.classList.add('is-ready');
+    }
+
+    function startOut() {
+      if (started) return;
+      started = true;
+      placeSymmetric();
+      requestAnimationFrame(function () {
+        cover.classList.add('is-ornament-out');
+      });
+    }
+
+    function scheduleMove() {
+      if (scheduled) return;
+      scheduled = true;
+      showAtStart();
+      window.setTimeout(startOut, MOVE_DELAY_MS);
+    }
+
+    function onResize() {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(function () {
+        placeSymmetric();
+      }, 120);
+    }
+
+    function boot() {
+      showAtStart();
+      scheduleMove();
+    }
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(boot);
+    } else {
+      boot();
+    }
+
+    window.addEventListener('load', function () {
+      placeSymmetric();
+      if (!scheduled) scheduleMove();
+    });
+    window.addEventListener('resize', onResize);
+  })();
+
+  (function initEndpageFigures() {
+    var endpage = document.querySelector('.endpage');
+    var panel = document.querySelector('#panel-end');
+    if (!endpage || !panel) return;
+
+    var risen = false;
+    function rise() {
+      if (risen) return;
+      risen = true;
+      endpage.classList.add('is-figures-rise');
+    }
+
+    if (typeof IntersectionObserver === 'undefined') {
+      window.setTimeout(rise, 600);
+      return;
+    }
+
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        window.setTimeout(rise, 500);
+        obs.disconnect();
+      });
+    }, { threshold: 0.28 });
+    obs.observe(panel);
+  })();
+
   if (typeof IntersectionObserver !== 'undefined') {
     var chartObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
@@ -2365,6 +2481,7 @@
   }
 
   function decorateZone(zone, isSection) {
+    if (zone.dataset.decorSkip === 'true') return;
     if (zone.dataset.decorApplied === 'true' && zone.dataset.decorVersion === '4') return;
 
     if (zone.dataset.decorVersion !== '4') {

@@ -1,0 +1,28 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+.vscode/
+.idea/
+
+# 本地脚本与预览中间产物
+_cleanup_images.py
+image/**/_preview/
+**/_preview/
+
+# 设计源文件 / 超大原片（网页不用）
+image/**/*.eps
+image/**/*.ai
+image/**/*.psd
+image/**/*.mp4
+image/**/*.mov
+image/视觉素材/单人线稿/*.png
+image/视觉素材/花纹素材/1.jpg
+image/视觉素材/花纹素材/2.jpg
+image/视觉素材/花纹素材/3.jpg
+image/视觉素材/花纹素材/3(1).jpg
+image/视觉素材/花纹素材/9.jpg
+
+# 可选：本地备份
+*.bak
