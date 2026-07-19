@@ -1097,7 +1097,7 @@
     });
   }
 
-  /* 封面花纹：显示后等待 3 秒，再沿对称轨迹滑向左右边缘 */
+  /* 封面花纹：正中央对称整体约占界面 70%，5 秒后向两侧拉开并缩回；文字渐显 */
   (function initCoverOrnaments() {
     var cover = document.querySelector('.cover-screen');
     var left = cover && cover.querySelector('.cover-screen__ornament--left');
@@ -1109,34 +1109,22 @@
     var started = false;
     var scheduled = false;
     var resizeTimer = 0;
-    var MOVE_DELAY_MS = 3000;
+    var MOVE_DELAY_MS = 5000;
 
     function placeSymmetric() {
       var coverRect = cover.getBoundingClientRect();
-      var titleRect = title.getBoundingClientRect();
-      var hookRect = hook.getBoundingClientRect();
-      var midX = coverRect.width / 2;
-      var gap = Math.max(10, Math.round(coverRect.width * 0.014));
       var edge = Math.max(10, Math.round(coverRect.width * 0.022));
+      var centerTop = Math.round(coverRect.height / 2);
+      /* 对称整体高度 ≈ 封面高度的 70% */
+      var startH = Math.round(coverRect.height * 0.7);
 
-      /* 以标题+副题文字块为基准，左右起点距中心等距 */
-      var leftClear = midX - (titleRect.left - coverRect.left) + gap;
-      var rightClear = (hookRect.right - coverRect.left) - midX + gap;
-      var startFromCenter = Math.max(leftClear, rightClear, coverRect.width * 0.18);
-
-      /* 同一高度：取「逛长街大席」与「衣食乐！」的中线 */
-      var startTop = Math.round(
-        ((titleRect.top + titleRect.height / 2) + (hookRect.top + hookRect.height / 2)) / 2 - coverRect.top
-      );
-      var endTop = Math.round(coverRect.height / 2);
-      var startInset = Math.round(midX - startFromCenter);
-
-      cover.style.setProperty('--cover-ornament-left-start', startInset + 'px');
-      cover.style.setProperty('--cover-ornament-right-start', startInset + 'px');
-      cover.style.setProperty('--cover-ornament-start-top', startTop + 'px');
-      cover.style.setProperty('--cover-ornament-end-top', endTop + 'px');
+      cover.style.setProperty('--cover-ornament-start-h', startH + 'px');
+      cover.style.setProperty('--cover-ornament-left-start', '50%');
+      cover.style.setProperty('--cover-ornament-right-start', '50%');
+      cover.style.setProperty('--cover-ornament-start-top', centerTop + 'px');
+      cover.style.setProperty('--cover-ornament-end-top', centerTop + 'px');
       cover.style.setProperty('--cover-ornament-left-end', edge + 'px');
-      cover.style.setProperty('--cover-ornament-right-end', edge + 'px');
+      cover.style.setProperty('--cover-ornament-right-end-left', 'calc(100% - ' + edge + 'px)');
     }
 
     function showAtStart() {
@@ -1151,6 +1139,7 @@
       placeSymmetric();
       requestAnimationFrame(function () {
         cover.classList.add('is-ornament-out');
+        cover.classList.add('is-text-in');
       });
     }
 
@@ -1188,8 +1177,7 @@
 
   (function initEndpageFigures() {
     var endpage = document.querySelector('.endpage');
-    var panel = document.querySelector('#panel-end');
-    if (!endpage || !panel) return;
+    if (!endpage) return;
 
     var risen = false;
     function rise() {
@@ -1209,8 +1197,8 @@
         window.setTimeout(rise, 500);
         obs.disconnect();
       });
-    }, { threshold: 0.28 });
-    obs.observe(panel);
+    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+    obs.observe(endpage);
   })();
 
   if (typeof IntersectionObserver !== 'undefined') {

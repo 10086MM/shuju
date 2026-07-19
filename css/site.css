@@ -43,7 +43,7 @@
   --font-cover-headline: '汉仪大标宋', 'HYDaBiaoSongJ', 'HYDaBiaoSong', 'SimSun', serif;
   --font-cover-subtitle: '禹卫书法行书', 'YuweiXingshu', 'YWShuFengXingShuJ', 'KaiTi', cursive;
   --font-act-header: '方正小标宋', 'FZXiaoBiaoSong', 'FZXBSJW', 'SimSun', serif;
-  --color-cover-subtitle: #1a6fb5;
+  --color-cover-subtitle: #6b4423;
   --bg-base: #f5efe6;
   --bg-dark: #ebe3d6;
   --bg-warm: #e8dfd0;
@@ -426,23 +426,44 @@ body::after {
   line-height: 1.8;
 }
 
-/* ===== 尾声 · 结尾页 ===== */
+/* ===== 第三幕收束 · 五人线稿 + 花纹 ===== */
 .endpage {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 100vh;
-  min-height: 100dvh;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: clamp(40px, 7vh, 88px);
+  margin-bottom: 0;
+  padding: 0;
   box-sizing: border-box;
+  min-height: 0;
+}
+
+.endpage--act3-close {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.endpage--act3-close .endpage__scene,
+.endpage--act3-close .endpage__pattern-crop {
+  margin-bottom: 0;
+  display: block;
+}
+
+.endpage--act3-close .footer-ethnic {
+  margin: 0 0 clamp(8px, 1.5vh, 18px);
+  padding: 0 clamp(16px, 3vw, 32px);
+  text-align: center;
+  color: #c4a574;
+  font-family: 'Ma Shan Zheng', cursive;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  letter-spacing: 0.28em;
+  transform: translateY(-30px);
 }
 
 .endpage__main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: clamp(40px, 8vh, 96px) clamp(20px, 4vw, 48px) clamp(12px, 2vh, 24px);
+  display: none;
 }
 
 .endpage__footer {
@@ -453,17 +474,24 @@ body::after {
   text-align: center;
 }
 
-/* 花纹底 + 小人走在花纹上沿 */
+/* 花纹底 + 小人走在花纹上沿；去掉底部约 1/3 */
 .endpage__scene {
   position: relative;
   width: 100%;
-  margin-top: auto;
+  margin-top: 0;
   line-height: 0;
   overflow: visible;
   background: transparent;
 }
 
-/* 透明底 PNG：空白区直接露出整页宣纸/印刷底 */
+.endpage__pattern-crop {
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  /* 原图 1100×791：先去下 1/3，再去 1/8 → 保留约 13/24 */
+  aspect-ratio: 1100 / 428;
+}
+
 .endpage__pattern {
   display: block;
   width: 100%;
@@ -477,9 +505,9 @@ body::after {
   position: absolute;
   left: 0;
   right: 0;
-  /* 起点：脚底在花纹上沿 */
-  bottom: 48%;
-  height: clamp(180px, 44vh, 360px);
+  /* 起点：脚底在花纹上沿；整体下移 115px（75+40） */
+  bottom: calc(48% - 115px);
+  height: clamp(160px, 38vh, 320px);
   display: flex;
   align-items: flex-end;
   justify-content: space-evenly;
@@ -489,9 +517,9 @@ body::after {
   transition: bottom 2.8s cubic-bezier(0.22, 0.7, 0.28, 1);
 }
 
-/* 进入尾声后向上走入空白区 */
+/* 滚入第三幕底部后向上走入空白区 */
 .endpage.is-figures-rise .endpage__figures {
-  bottom: 72%;
+  bottom: calc(72% - 115px);
 }
 
 .endpage__figure-slot {
@@ -505,7 +533,6 @@ body::after {
   border: none;
   box-shadow: none;
   outline: none;
-  /* --v-y：V 字纵向偏移（负值向上） */
   transform: translate(0, var(--v-y, 0));
   transition: transform 2.8s cubic-bezier(0.22, 0.7, 0.28, 1);
 }
@@ -525,7 +552,6 @@ body::after {
   border: none;
   box-shadow: none;
   outline: none;
-  /* 深色实线 + 浅色描边，叠在花纹上也清晰 */
   opacity: 1;
   mix-blend-mode: normal;
   image-rendering: auto;
@@ -578,19 +604,19 @@ body::after {
   }
 
   .endpage.is-figures-rise .endpage__figures {
-    bottom: 86%;
+    bottom: calc(86% - 115px);
   }
 }
 
 @media (max-width: 720px) {
   .endpage__figures {
-    bottom: 46%;
-    height: clamp(150px, 36vh, 240px);
+    bottom: calc(46% - 115px);
+    height: clamp(130px, 32vh, 220px);
     gap: clamp(2px, 1vw, 8px);
   }
 
   .endpage.is-figures-rise .endpage__figures {
-    bottom: 70%;
+    bottom: calc(70% - 115px);
   }
 
   .endpage__figure {
@@ -600,14 +626,6 @@ body::after {
   .endpage__figure--hani {
     max-width: min(28vw, 170px);
   }
-}
-
-html.story-layered .story-panel--end .story-panel__scroll {
-  padding: 0;
-}
-
-html.story-layered .story-panel--end .endpage {
-  min-height: 100%;
 }
 
 /* 页脚 */
@@ -709,7 +727,7 @@ footer {
   --ancient-ink: #3d2b1f;
   --cover-title-fill: #8f7358;
   --cover-title-stroke: 4px;
-  --cover-hook-red: #c62828;
+  --cover-hook-red: #8b1a1a;
   --hani-indigo: #2f5a4a;
   --aged-tint: rgba(180, 150, 120, 0.08);
 
@@ -1517,6 +1535,11 @@ html.story-layered .story-panel::before {
     scrollbar-color: rgba(212, 168, 75, 0.4) transparent;
   }
 
+  /* 第三幕以花纹收束贴底，去掉底部宣纸空白条 */
+  html.story-layered #panel-act3 .story-panel__scroll {
+    padding-bottom: 0;
+  }
+
   html.story-layered .story-panel__scroll .page,
   html.story-layered .story-panel__scroll .article-block {
     width: 66.667%;
@@ -1607,7 +1630,7 @@ html.story-layered .story-panel::before {
     letter-spacing: 0.14em;
     margin: 0;
     transform: none;
-    text-shadow: 2px 4px 10px rgba(26, 111, 181, 0.22);
+    text-shadow: 2px 4px 10px rgba(107, 68, 35, 0.22);
   }
 
   html.story-layered .cover-screen__cta {
@@ -1826,12 +1849,14 @@ html.story-layered .story-panel::before {
   outline: 0 !important;
   box-shadow: none !important;
   background: transparent !important;
-  will-change: left, right, top, transform, opacity;
+  will-change: left, right, top, transform, opacity, height, max-width;
   transition:
     left 4.8s cubic-bezier(0.22, 1, 0.36, 1),
     right 4.8s cubic-bezier(0.22, 1, 0.36, 1),
     top 4.8s cubic-bezier(0.22, 1, 0.36, 1),
     transform 4.8s cubic-bezier(0.22, 1, 0.36, 1),
+    height 4.8s cubic-bezier(0.22, 1, 0.36, 1),
+    max-width 4.8s cubic-bezier(0.22, 1, 0.36, 1),
     opacity 1.2s ease;
 }
 
@@ -1839,34 +1864,46 @@ html.story-layered .story-panel::before {
   opacity: 0.96;
 }
 
+/* 未拉开前：对称整体约占封面高度 70% */
+.cover-screen:not(.is-ornament-out) .cover-screen__ornament.is-ready {
+  height: var(--cover-ornament-start-h, 70vh);
+  max-width: calc(var(--cover-ornament-start-h, 70vh) * 0.52);
+}
+
 .cover-screen__ornament--left {
-  left: var(--cover-ornament-left-start, 30%);
-  top: var(--cover-ornament-start-top, 48%);
+  left: var(--cover-ornament-left-start, 50%);
+  right: auto;
+  top: var(--cover-ornament-start-top, 50%);
   transform: translate(-100%, -50%);
-  /* 更强淡化半圆直径切边 */
+  transform-origin: 100% 50%;
   -webkit-mask-image: linear-gradient(to left, transparent 0%, transparent 3%, #000 14%, #000 100%);
   mask-image: linear-gradient(to left, transparent 0%, transparent 3%, #000 14%, #000 100%);
 }
 
 .cover-screen__ornament--right {
-  left: auto;
-  right: var(--cover-ornament-right-start, 30%);
-  top: var(--cover-ornament-start-top, 48%);
-  transform: translate(100%, -50%);
+  left: var(--cover-ornament-right-start, 50%);
+  right: auto;
+  top: var(--cover-ornament-start-top, 50%);
+  transform: translate(0, -50%);
+  transform-origin: 0% 50%;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 3%, #000 14%, #000 100%);
   mask-image: linear-gradient(to right, transparent 0%, transparent 3%, #000 14%, #000 100%);
 }
 
 .cover-screen.is-ornament-out .cover-screen__ornament--left {
   left: var(--cover-ornament-left-end, 16px);
+  right: auto;
   top: var(--cover-ornament-end-top, 50%);
   transform: translate(0, -50%);
+  transform-origin: 50% 50%;
 }
 
 .cover-screen.is-ornament-out .cover-screen__ornament--right {
-  right: var(--cover-ornament-right-end, 16px);
+  left: var(--cover-ornament-right-end-left, calc(100% - 16px));
+  right: auto;
   top: var(--cover-ornament-end-top, 50%);
-  transform: translate(0, -50%);
+  transform: translate(-100%, -50%);
+  transform-origin: 50% 50%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1878,13 +1915,26 @@ html.story-layered .story-panel::before {
   .cover-screen__ornament--left {
     left: 16px !important;
     top: 50% !important;
+    height: clamp(220px, 36vh, 420px) !important;
+    max-width: clamp(88px, 12vw, 180px) !important;
     transform: translate(0, -50%);
   }
 
   .cover-screen__ornament--right {
-    right: 16px !important;
+    left: calc(100% - 16px) !important;
+    right: auto !important;
     top: 50% !important;
-    transform: translate(0, -50%);
+    height: clamp(220px, 36vh, 420px) !important;
+    max-width: clamp(88px, 12vw, 180px) !important;
+    transform: translate(-100%, -50%);
+  }
+
+  .cover-screen__title,
+  .cover-screen__hook,
+  .cover-screen__bridge,
+  .cover-screen__cta {
+    opacity: 1 !important;
+    transition: none !important;
   }
 }
 
@@ -1920,6 +1970,8 @@ html.story-layered .story-panel::before {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
+  opacity: 0;
+  transition: opacity 2.4s ease 0.2s;
 }
 
 .cover-screen__hook {
@@ -1934,6 +1986,8 @@ html.story-layered .story-panel::before {
   line-height: 1.25;
   margin: 0;
   white-space: nowrap;
+  opacity: 0;
+  transition: opacity 2.4s ease 0.7s;
 }
 
 .cover-screen__bridge {
@@ -1945,7 +1999,16 @@ html.story-layered .story-panel::before {
   letter-spacing: 0.14em;
   margin: 0;
   transform: none;
-  text-shadow: 2px 4px 10px rgba(26, 111, 181, 0.22);
+  text-shadow: 2px 4px 10px rgba(107, 68, 35, 0.22);
+  opacity: 0;
+  transition: opacity 2.4s ease 1.2s;
+}
+
+.cover-screen.is-text-in .cover-screen__title,
+.cover-screen.is-text-in .cover-screen__hook,
+.cover-screen.is-text-in .cover-screen__bridge,
+.cover-screen.is-text-in .cover-screen__cta {
+  opacity: 1;
 }
 
 .cover-screen__cta {
@@ -1956,6 +2019,8 @@ html.story-layered .story-panel::before {
   justify-content: center;
   margin-top: auto;
   padding-top: clamp(20px, 4vh, 40px);
+  opacity: 0;
+  transition: opacity 2s ease 1.6s;
 }
 
 .cover-start-btn {
@@ -2861,6 +2926,15 @@ body.pattern-modal-open {
   margin-left: auto;
   margin-right: auto;
   text-wrap: balance;
+}
+
+.chart-title--one-line {
+  max-width: none;
+  width: 100%;
+  white-space: nowrap;
+  text-wrap: nowrap;
+  font-size: clamp(0.95rem, 2.15vw, 1.55rem);
+  letter-spacing: 0.02em;
 }
 
 .chart-canvas-wrap {

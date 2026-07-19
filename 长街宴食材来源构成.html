@@ -44,38 +44,38 @@
         }
 
         .header {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .header h1 {
-            font-size: 2.5rem;
+            font-size: clamp(1.2rem, 3.6vw, 2.35rem);
             color: var(--dark-text);
             margin: 0;
-            letter-spacing: 2px;
-            text-shadow: none;
+            letter-spacing: 0.06em;
+            white-space: nowrap;
+            text-wrap: nowrap;
         }
 
         .header p.subtitle {
             color: #7a6a58;
-            margin-top: 10px;
-            font-size: 1.1rem;
+            margin-top: 8px;
+            font-size: 1.05rem;
         }
 
-        /* 核心布局：绝对定位模拟拼图 */
+        /* 核心：绝对定位 + 梯形 clip，叠成参考图那种三角拼图 */
         .diagram-container {
             position: relative;
             width: 100%;
-            height: 600px;
+            height: 560px;
             margin: 0 auto;
         }
 
         .card {
             position: absolute;
             border-radius: 20px;
-            padding: 25px;
+            padding: 22px 18px;
             color: var(--dark-text);
-            box-shadow: none;
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), filter 0.35s;
             cursor: pointer;
             overflow: hidden;
             display: flex;
@@ -83,22 +83,19 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            border: 1px solid rgba(61, 43, 31, 0.08);
+            filter: drop-shadow(0 8px 16px rgba(61, 43, 31, 0.14));
+            box-sizing: border-box;
         }
 
-        /* 悬浮玻璃态效果 */
         .card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%);
-            backdrop-filter: blur(5px);
             z-index: 1;
             opacity: 0;
             transition: opacity 0.3s;
+            pointer-events: none;
         }
 
         .card:hover::before {
@@ -106,101 +103,88 @@
         }
 
         .card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 12px 24px rgba(61, 43, 31, 0.1);
+            transform: translateY(-8px) scale(1.01);
+            filter: drop-shadow(0 14px 24px rgba(61, 43, 31, 0.2));
         }
 
-        /* 各个区块的位置和大小 */
+        /* 山林：上宽下窄，在后 */
         .card-mountain {
             top: 0;
             left: 5%;
             width: 90%;
             height: 55%;
             background: linear-gradient(135deg, var(--mountain-color) 0%, #8fa0b0 100%);
-            z-index: 10;
+            z-index: 1;
             clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
         }
 
+        /* 梯田：左下，叠在山林之上 */
         .card-terrace {
             bottom: 0;
             left: 5%;
             width: 47%;
-            height: 40%;
+            height: 48%;
             background: linear-gradient(135deg, var(--terrace-color) 0%, #8b5a4a 100%);
-            z-index: 11;
+            z-index: 2;
             clip-path: polygon(0 0, 95% 0, 100% 100%, 5% 100%);
         }
 
+        /* 市集：右下，最前，叠住左卡一角 */
         .card-market {
             bottom: 0;
             right: 5%;
             width: 47%;
-            height: 40%;
+            height: 48%;
             background: linear-gradient(135deg, var(--market-color) 0%, #b8956e 100%);
-            z-index: 12;
             color: #3d2b1f;
+            z-index: 3;
             clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 100%);
         }
 
-        /* 标题样式 */
         .card h2 {
-            margin: 0 0 15px 0;
-            font-size: 1.8rem;
+            margin: 0 0 12px 0;
+            font-size: 1.65rem;
             font-weight: 600;
             position: relative;
             z-index: 2;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
 
-        /* 图标容器 */
         .icon-box {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 2.8rem;
+            margin-bottom: 12px;
             filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
             position: relative;
             z-index: 2;
-            animation: float 3s ease-in-out infinite;
+            line-height: 1;
         }
 
-        .card-terrace .icon-box {
-            animation-delay: 0.5s;
-        }
-        .card-market .icon-box {
-            animation-delay: 1s;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
-        /* 内容列表 */
         .card ul {
             list-style: none;
-            padding: 0;
             margin: 0;
-            font-size: 1.1rem;
-            line-height: 1.8;
+            padding: 10px 20px;
+            font-size: 1.05rem;
+            line-height: 1.75;
             position: relative;
             z-index: 2;
-            background: rgba(255,255,255,0.2);
-            padding: 10px 20px;
-            border-radius: 10px;
-            backdrop-filter: blur(2px);
+            background: rgba(255,255,255,0.28);
+            border-radius: 12px;
+            box-sizing: border-box;
+        }
+
+        .card-terrace ul,
+        .card-market ul {
+            width: 95%;
+            padding-left: 16px;
+            padding-right: 16px;
         }
 
         .card-market ul {
-            background: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.42);
         }
 
-        /* 互动弹窗层 */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(0,0,0,0.6);
             backdrop-filter: blur(5px);
             display: flex;
@@ -258,41 +242,38 @@
             border-radius: 25px;
             cursor: pointer;
             font-size: 1rem;
-            transition: background 0.3s;
         }
 
         .close-btn:hover {
             background: #555;
         }
 
-        /* 响应式 */
-        @media (max-width: 768px) {
+        /* 只有手机竖屏才收成单列，嵌入页宽度仍保留梯形 */
+        @media (max-width: 420px) {
             .diagram-container {
                 height: auto;
-                min-height: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
             }
-            .card-mountain {
+            .card,
+            .card-mountain,
+            .card-terrace,
+            .card-market {
                 position: relative;
-                width: 100%;
-                height: 300px;
+                inset: auto;
+                width: 100% !important;
+                height: auto;
+                min-height: 180px;
+                left: auto !important;
+                right: auto !important;
                 clip-path: none;
-                margin-bottom: 10px;
+                border-radius: 18px;
+                z-index: 1;
             }
-            .card-terrace, .card-market {
-                position: relative;
-                width: 100%;
-                height: 200px;
-                clip-path: none;
-                bottom: auto;
-                left: auto;
-                right: auto;
-                margin-bottom: 10px;
-            }
-            .card h2 {
-                font-size: 1.4rem;
-            }
-            .card ul {
-                font-size: 1rem;
+            .header h1 {
+                font-size: clamp(1rem, 5vw, 1.35rem);
+                letter-spacing: 0.04em;
             }
         }
     </style>
@@ -305,11 +286,10 @@
     <div class="container">
         <div class="header">
             <h1>哈尼族长街宴食材来源构成</h1>
-            <p class="subtitle">点击卡片探索“森林-梯田-市集”的生态智慧
+            <p class="subtitle">点击卡片探索“森林-梯田-市集”的生态智慧</p>
         </div>
 
         <div class="diagram-container">
-            <!-- 1. 山林采集 -->
             <div class="card card-mountain" onclick="openModal('mountain')">
                 <div class="icon-box">🌲</div>
                 <h2>山林采集</h2>
@@ -322,7 +302,6 @@
                 </ul>
             </div>
 
-            <!-- 2. 梯田自产 -->
             <div class="card card-terrace" onclick="openModal('terrace')">
                 <div class="icon-box">🌾</div>
                 <h2>梯田自产</h2>
@@ -335,7 +314,6 @@
                 </ul>
             </div>
 
-            <!-- 3. 市集外购 -->
             <div class="card card-market" onclick="openModal('market')">
                 <div class="icon-box">🛒</div>
                 <h2>市集外购</h2>
@@ -348,12 +326,11 @@
         </div>
     </div>
 
-    <!-- 弹窗层 -->
     <div class="modal-overlay" id="modal" onclick="closeModal()">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-icon" id="modalIcon">🌲</div>
             <h2 class="modal-title" id="modalTitle">山林采集</h2>
-            <p class="modal-desc" id="modalDesc">这里是详细描述...
+            <p class="modal-desc" id="modalDesc">这里是详细描述...</p>
             <button class="close-btn" onclick="closeModal()">关闭</button>
         </div>
     </div>
@@ -390,11 +367,8 @@
             document.getElementById('modal').classList.remove('active');
         }
 
-        // ESC键关闭
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeModal();
-            }
+            if (e.key === 'Escape') closeModal();
         });
     </script>
 </div>

@@ -35,20 +35,28 @@ body{font-family:'PingFang SC','Noto Sans SC',sans-serif;color:#3d2b1f}
 .taboo .quote{margin:28px 0 12px;background:transparent;border-radius:40px 12px 40px 12px;padding:20px 24px;text-align:center;font-size:1.05rem}
 .taboo .quote b{font-size:1.3rem}
 .taboo footer{text-align:center;padding:16px 0 8px;font-size:.72rem;color:#786653;border-top:1px solid #dbcfbe;margin-top:20px}
-/* twelve */
+/* twelve — 左右交错咬合：下一条上提到上一条季节标签附近 */
 .twelve body,.twelve{color:#5c3d2e}
 .twelve .header{text-align:center;padding:20px 16px 12px;margin-bottom:16px;color:#4a4036}
 .twelve .header h1{margin:0;font-size:2.1em;line-height:1.2}
 .twelve .header p{margin-top:6px;font-size:1.05em;opacity:.85;color:#7a6a58}
-.twelve .timeline-container{max-width:1200px;margin:0 auto;position:relative;padding:0 16px 16px}
-.twelve .timeline-container::after{content:'';position:absolute;width:5px;background:#a1887f;top:0;bottom:0;left:50%;margin-left:-2.5px;border-radius:3px;z-index:1}
-.twelve .timeline-item{padding:8px 28px;position:relative;width:50%;box-sizing:border-box}
-.twelve .timeline-item.left{left:0;text-align:right;padding-right:48px}
-.twelve .timeline-item.right{left:50%;text-align:left;padding-left:48px}
+.twelve .timeline-container{max-width:1200px;margin:0 auto;position:relative;padding:0 16px 40px}
+.twelve .timeline-container::after{content:'';position:absolute;width:5px;background:#a1887f;top:0;bottom:0;left:50%;margin-left:-2.5px;border-radius:3px;z-index:0}
+.twelve .timeline-item{padding:8px 40px;position:relative;width:50%;box-sizing:border-box;z-index:1}
+.twelve .timeline-item.left{left:0;text-align:right;padding-right:52px}
+.twelve .timeline-item.right{left:50%;text-align:left;padding-left:52px}
+/* 后一条上提，顶边约落在前一条季节标签（春·秋）下方 */
+.twelve .timeline-item.right,
+.twelve .timeline-item.left:not(:first-child){
+  margin-top: -10rem;
+}
 .twelve .year-tag{display:inline-block;background:#8d6e63;color:#fff;padding:5px 12px;border-radius:20px;font-weight:bold;font-size:1em;margin-bottom:8px}
-.twelve .content-card{padding:10px 8px;border-radius:10px;border:none;background:transparent;transition:transform .3s}
+.twelve .content-card{padding:10px 8px;border-radius:10px;border:none;background:transparent;transition:transform .3s;position:relative;z-index:1}
 .twelve .content-card:hover{transform:translateY(-4px)}
-.twelve .content-card img{width:100%;max-width:260px;height:auto;border-radius:8px;display:block;margin:0 auto 10px;border:none}
+.twelve .content-card img{width:100%;max-width:240px;height:auto;border-radius:8px;display:block;margin:0 0 10px;border:none}
+/* 图靠外侧，文字靠中线，交错时互不挡 */
+.twelve .timeline-item.left .content-card img{margin-left:0;margin-right:auto}
+.twelve .timeline-item.right .content-card img{margin-left:auto;margin-right:0}
 .twelve .card-text h3{margin:0 0 6px;color:#4e342e;font-size:1.35em;line-height:1.25}
 .twelve .card-text p{margin:4px 0;line-height:1.5;color:#6d4c41;font-size:.95em}
 .twelve .season{font-weight:bold;color:#d84315;font-size:1em}
@@ -58,7 +66,12 @@ body{font-family:'PingFang SC','Noto Sans SC',sans-serif;color:#3d2b1f}
   .twelve .header h1{font-size:1.75em}
   .twelve .timeline-container{padding:0 12px 12px}
   .twelve .timeline-container::after{left:24px}
-  .twelve .timeline-item,.twelve .timeline-item.left,.twelve .timeline-item.right{width:100%;left:0;text-align:left;padding:6px 12px 6px 56px}
+  .twelve .timeline-item,.twelve .timeline-item.left,.twelve .timeline-item.right{
+    width:100%;left:0;text-align:left;padding:6px 12px 6px 56px;margin-top:0!important;
+  }
+  .twelve .content-card img,.twelve .timeline-item.left .content-card img,.twelve .timeline-item.right .content-card img{
+    max-width:240px;margin-left:0;margin-right:auto;
+  }
 }
 </style>
 </head>
