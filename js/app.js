@@ -1490,19 +1490,34 @@
     function showItem(index, fromUser) {
       activeIndex = index;
       var item = TRADITIONAL_DATA[index];
+      var url = encodePath(TRADITIONAL_FOLDERS[0], item.file);
       stage.classList.add('is-switching');
       heroImg.classList.add('is-fade');
 
-      setTimeout(function () {
-        delete heroImg.dataset.mediaQueued;
-        if (window.MediaLoadQueue) window.MediaLoadQueue.boost(container);
-        resolveSrc(TRADITIONAL_FOLDERS, item.file, heroImg, { immediate: true, priority: true, boost: true });
+      function paint() {
         indexEl.textContent = String(index + 1).padStart(2, '0');
         nameEl.textContent = item.name;
         meaningEl.textContent = item.meaning;
+        heroImg.alt = item.name;
+        /* 大图不走排队，立刻加载，避免一直卡在 media-pending 看不见 */
+        delete heroImg.dataset.mediaQueued;
+        if (window.MediaLoadQueue && typeof window.MediaLoadQueue.urgent === 'function') {
+          window.MediaLoadQueue.urgent(heroImg, url);
+          window.MediaLoadQueue.boost(container);
+        } else {
+          heroImg.classList.remove('media-pending');
+          heroImg.classList.add('media-loaded');
+          heroImg.src = url;
+        }
         heroImg.classList.remove('is-fade');
         stage.classList.remove('is-switching');
-      }, fromUser ? 180 : 220);
+      }
+
+      if (fromUser) {
+        window.setTimeout(paint, 160);
+      } else {
+        paint();
+      }
 
       rail.querySelectorAll('.pattern-spotlight__thumb').forEach(function (btn, i) {
         btn.classList.toggle('is-active', i === index);
