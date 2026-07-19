@@ -3462,6 +3462,12 @@ body.pattern-modal-open {
   margin-bottom: 20px;
 }
 
+.memory-poster__stage {
+  position: relative;
+  z-index: 5;
+  overflow: visible;
+}
+
 .memory-poster__option {
   padding: 10px 18px;
   background: transparent;
@@ -3535,7 +3541,7 @@ body.pattern-modal-open {
   letter-spacing: 0.08em;
 }
 
-/* 生成按钮居中；纪念卡在左侧，底边对齐按钮底边 */
+/* 左侧方框舞台：顶对齐选项、底对齐生成按钮；纪念卡缩小填入 */
 .memory-poster__craft {
   position: relative;
   display: flex;
@@ -3546,18 +3552,19 @@ body.pattern-modal-open {
 
 .memory-poster__result {
   position: absolute;
-  left: max(-14vw, -240px);
-  right: auto;
+  left: 0;
+  top: 0;
   bottom: 0;
-  top: auto;
-  transform: translateY(8px) scale(0.97);
+  width: clamp(128px, 16vw, 168px);
+  transform: scale(0.96);
+  transform-origin: left bottom;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
+  justify-content: flex-end;
   gap: 0;
   margin: 0;
-  width: max-content;
-  max-width: min(260px, 34vw);
+  padding: 0;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -3569,7 +3576,7 @@ body.pattern-modal-open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateY(0) scale(1);
+  transform: scale(1);
 }
 
 .memory-poster__result[hidden] {
@@ -3583,14 +3590,20 @@ body.pattern-modal-open {
 .memory-poster__result .souvenir-card {
   position: relative;
   z-index: 1;
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  aspect-ratio: auto;
 }
 
 .memory-poster__result .memory-poster__download {
   position: absolute;
   left: 50%;
-  top: calc(100% + 10px);
+  top: calc(100% + 8px);
   transform: translateX(-50%);
   white-space: nowrap;
+  font-size: 0.78rem;
+  padding: 6px 12px;
 }
 
 .souvenir-card {
@@ -3600,30 +3613,105 @@ body.pattern-modal-open {
   isolation: isolate;
 }
 
+/* 缩小卡内字号，适配方框 */
+.memory-poster__result .souvenir-card__inner {
+  padding: 10px 8px 12px;
+}
+
+.memory-poster__result .souvenir-card__brand {
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+}
+
+.memory-poster__result .souvenir-card__dim {
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+}
+
+.memory-poster__result .souvenir-card__title {
+  font-size: clamp(0.78rem, 1.6vw, 0.95rem);
+  margin-bottom: 4px;
+}
+
+.memory-poster__result .souvenir-card__subtitle {
+  font-size: 0.48rem;
+  letter-spacing: 0.04em;
+}
+
+.memory-poster__result .souvenir-card__divider {
+  margin: 8px 0;
+}
+
+.memory-poster__result .souvenir-card__quote-lead {
+  font-size: 0.52rem;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  letter-spacing: 0;
+}
+
+.memory-poster__result .souvenir-card__quote {
+  font-size: clamp(0.62rem, 1.3vw, 0.78rem);
+  line-height: 1.45;
+}
+
+.memory-poster__result .souvenir-card__summary {
+  font-size: 0.58rem;
+  line-height: 1.45;
+}
+
+.memory-poster__result .souvenir-card__sign {
+  font-size: 0.52rem;
+  letter-spacing: 0.06em;
+}
+
+.memory-poster__result .souvenir-card__source {
+  font-size: 0.4rem;
+  line-height: 1.35;
+}
+
+.memory-poster__result .souvenir-card__seal {
+  width: 28px;
+  height: 28px;
+  font-size: 0.52rem;
+  right: 8px;
+  bottom: 36px;
+}
+
+.memory-poster__result .souvenir-card__foot {
+  padding-top: 8px;
+}
+
+.memory-poster__result .souvenir-card__frame {
+  padding: 5px;
+}
+
 @media (max-width: 900px) {
   .memory-poster__result {
     left: 50%;
     right: auto;
-    bottom: auto;
     top: auto;
-    margin-top: 18px;
+    bottom: auto;
+    width: min(280px, 88vw);
+    height: auto;
+    margin: 18px auto 0;
     position: relative;
-    max-width: min(280px, 88vw);
-    transform: translateX(-50%) translateY(8px) scale(0.97);
+    transform: translateX(-50%) scale(0.97);
   }
 
   .memory-poster__result.is-revealed {
-    transform: translateX(-50%) translateY(0) scale(1);
+    transform: translateX(-50%) scale(1);
+  }
+
+  .memory-poster__result .souvenir-card {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4.25;
   }
 
   .memory-poster__result .memory-poster__download {
     position: static;
     transform: none;
     margin-top: 12px;
-  }
-
-  .souvenir-card {
-    width: min(100%, 280px);
   }
 }
 
